@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileActivity">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottomNavigationView"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bottom_background"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="30dp"
+        android:elevation="2dp"
+        app:menu="@menu/bottom_menu"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemRippleColor="@android:color/transparent"
+        app:labelVisibilityMode="unlabeled"/>
+
+    <TextView
+        android:id="@+id/editProfiletxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My Profile"
+        android:layout_marginTop="10dp"
+        android:textSize="32sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/name_surname"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_below="@+id/editProfiletxt"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Name Surname"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/phoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_below="@+id/name_surname"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:inputType="phone"
+        android:text="Phone Number"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/edit_email"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_below="@+id/phoneNumber"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:text="E-mail"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/edit_password"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_below="@+id/edit_email"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:text="Password"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/EditProfilebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="86dp"
+        android:layout_above="@+id/bottomNavigationView"
+        android:layout_below="@+id/edit_password"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="74dp"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="83dp"
+        android:layout_marginRight="110dp"
+        android:layout_marginBottom="75dp"
+        android:backgroundTint="@color/deepRed"
+        android:text="Edit Profile"
+        android:textColorLink="#FFFFFF"
+        android:textSize="24dp" />
+
+
+</RelativeLayout>

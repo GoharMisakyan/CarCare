@@ -1,18 +1,23 @@
 package com.example.carcare;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.android.material.tabs.TabLayout;
 
-    EditText username;
-    EditText password;
-    Button loginButton;
+public class MainActivity extends AppCompatActivity {
+Button loginButton;
+private TabLayout tabLayout;
+private ViewPager2 viewPager2;
+private ViewPagerAdapter adapter;
 
 
     @Override
@@ -20,20 +25,44 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tabLayout= findViewById(R.id.tab_layout);
+        viewPager2= findViewById(R.id.view_pager);
 
-        username = findViewById(R.id.username);
-        password = findViewById(R.id.password);
-        loginButton = findViewById(R.id.loginButton);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        tabLayout.addTab(tabLayout.newTab().setText("Login"));
+        tabLayout.addTab(tabLayout.newTab().setText("SignUp"));
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        adapter = new ViewPagerAdapter(fragmentManager, getLifecycle());
+        viewPager2.setAdapter(adapter);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View view) {
-                if (username.getText().toString().equals("Gohar") && password.getText().toString().equals("G1234")){
-                    Toast.makeText(MainActivity.this, "Successful", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
-                }
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager2.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
+
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+             tabLayout.selectTab(tabLayout.getTabAt(position));
+            }
+        });
+
+
+
+
+
     }
 }
