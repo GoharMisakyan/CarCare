@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/priceListTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Srevice History"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/It1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="27.03.2023   Oil change   SomeName      5stars"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/It2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="06.09.2023   Oil change   SomeName      4stars"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/It3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="30.11.2023   Oil change   SomeName      5stars"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/It4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="27.02.2024   Oil change   SomeName      3stars"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+
+
+</LinearLayout>

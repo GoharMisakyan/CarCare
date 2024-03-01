@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/priceListTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Provided Services and  Prices"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/priceItem1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Engine Oil Change: 1000amd"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/priceItem2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Antifreeze change: 1500amd"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/priceItem3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Air filter change: 2000amd"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/priceItem4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Full diagnostics: 25000amd"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/priceItem5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Battery change: 300000amd"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>
