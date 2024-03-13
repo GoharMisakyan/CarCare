@@ -18,7 +18,7 @@
         android:layout_marginBottom="30dp"
         android:background="@drawable/bottom_background"
         android:elevation="2dp"
-        android:foregroundTint="#B70505"
+        android:foregroundTint="#002366"
         app:itemIconSize="30dp"
         app:itemIconTint="@drawable/item_selector"
         app:itemRippleColor="@android:color/transparent"
@@ -29,7 +29,7 @@
         android:id="@+id/newService"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:backgroundTint="@color/deepRed"
+        android:backgroundTint="@color/royalBlue"
         android:text="New Service"
         android:layout_marginTop="100dp"
         android:textColorLink="#FFFFFF" />
@@ -40,7 +40,7 @@
         android:layout_height="60dp"
         android:layout_below="@+id/newService"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/deepRed"
+        android:backgroundTint="@color/royalBlue"
         android:text="Service History"
         android:textColorLink="#FFFFFF" />
     <Button
@@ -49,7 +49,7 @@
         android:layout_height="60dp"
         android:layout_below="@+id/ServiceHistory"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/deepRed"
+        android:backgroundTint="@color/royalBlue"
         android:text="Service and Price lists"
         android:textColorLink="#FFFFFF" />
 
@@ -59,7 +59,7 @@
         android:layout_height="60dp"
         android:layout_below="@+id/ServiceAndPriceLists"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/deepRed"
+        android:backgroundTint="@color/royalBlue"
         android:text="Settings"
         android:textColorLink="#FFFFFF" />
     <Button
@@ -68,7 +68,7 @@
         android:layout_height="60dp"
         android:layout_below="@+id/settings"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/deepRed"
+        android:backgroundTint="@color/royalBlue"
         android:text="About"
         android:textColorLink="#FFFFFF" />
 
