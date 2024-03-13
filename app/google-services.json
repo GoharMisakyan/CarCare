@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "612443693069",
+    "project_id": "carcare-52b5d",
+    "storage_bucket": "carcare-52b5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612443693069:android:eef9d156df7612d46a3544",
+        "android_client_info": {
+          "package_name": "com.example.carcare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFRGPLcODFxY7M4pbNRbcnIbg5UMZGeKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
