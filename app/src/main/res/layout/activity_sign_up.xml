@@ -18,6 +18,7 @@
         app:cardElevation="20dp">
 
         <LinearLayout
+            android:id="@+id/user_checkbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -83,6 +84,16 @@
                 android:inputType="textPassword"
                 android:padding="8dp"
                 android:textColor="@color/black" />
+
+            <Switch
+                android:id="@+id/ownerSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:drawablePadding="8dp"
+                android:text="Sign Up as an Car Service Owner"
+                android:textStyle="bold"/>
+
 
             <Button
                 android:id="@+id/signup_button"
