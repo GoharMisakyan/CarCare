@@ -91,7 +91,7 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:drawablePadding="8dp"
-                android:text="Sign Up as an Car Service Owner"
+                android:text="Sign Up as a Car Service Owner"
                 android:textStyle="bold"/>
 
 

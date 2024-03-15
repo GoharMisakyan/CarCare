@@ -142,10 +142,9 @@ public class SignUpActivity extends AppCompatActivity {
                         userInfo.put("PhoneNumber", phone.getText().toString());
 
                         if (isOwner) {
-                            // Don't set "isUser" field for owner users
-                            // userInfo.put("isUser", 0);
+                            //owner
                         } else {
-                            // Set "isUser" field for regular users
+                            // regular user
                             userInfo.put("isUser", 1);
                         }
 
