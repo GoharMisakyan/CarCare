@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".MapActivity">
 
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_above="@id/bottomNavigationView"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,14 +34,6 @@
         app:itemRippleColor="@android:color/transparent"
         app:labelVisibilityMode="unlabeled"/>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="396dp"
-        android:layout_height="362dp"
-        android:layout_above="@+id/bottomNavigationView"
-        android:layout_marginBottom="106dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        app:srcCompat="@mipmap/map" />
+
 
 </RelativeLayout>
