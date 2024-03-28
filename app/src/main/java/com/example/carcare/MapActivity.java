@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -85,6 +87,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(@NonNull GoogleMap googleMap) {
         myMap = googleMap;
 
+
+
         LatLng Samauto = new LatLng(40.159373712757656, 44.44923769322041);
         myMap.addMarker(new MarkerOptions().position(Samauto).title("SamAuto"));
         myMap.moveCamera(CameraUpdateFactory.newLatLng(Samauto));
@@ -97,6 +101,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
         myMap.setMyLocationEnabled(true);
         myMap.moveCamera(CameraUpdateFactory.newLatLng(MyLocation));
+
+        myMap.getUiSettings().setZoomControlsEnabled(true);
+        myMap.getUiSettings().setCompassEnabled(true);
+
+
 
     }
 
@@ -111,4 +120,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         }
     }
+
+
 }
