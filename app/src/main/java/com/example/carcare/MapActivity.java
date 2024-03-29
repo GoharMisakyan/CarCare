@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -32,6 +34,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private GoogleMap myMap;
@@ -141,6 +146,52 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottom_sheet_layout);
         dialog.show();
+
+        // Find the heart icon and set OnClickListener
+        ImageView addToFavorites = dialog.findViewById(R.id.add_to_fav);
+
+        // Check if the service is already in favorites
+        final SharedPreferences[] sharedPreferences = {getSharedPreferences("MyFavorites", Context.MODE_PRIVATE)};
+        Set<String> favorites = sharedPreferences[0].getStringSet("favorites", new HashSet<String>());
+        final boolean[] isFavorite = {favorites.contains("Service Name")};
+
+        // Update the heart icon state accordingly
+        if (isFavorite[0]) {
+            addToFavorites.setImageResource(R.drawable.baseline_favorite_24); // Filled heart
+        } else {
+            addToFavorites.setImageResource(R.drawable.baseline_favorite_border_24); // Unfilled heart
+        }
+
+        addToFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Toggle the heart icon state
+                if (isFavorite[0]) {
+                    // Remove service from favorites
+                    favorites.remove("Service Name");
+                    // Update SharedPreferences with the new set of favorites
+                    sharedPreferences[0].edit().putStringSet("favorites", favorites).apply();
+                    // Update heart icon to unfilled
+                    addToFavorites.setImageResource(R.drawable.baseline_favorite_border_24);
+                    // Update isFavorite flag
+                    isFavorite[0] = false;
+                    // Show a toast or any feedback to the user
+                    Toast.makeText(MapActivity.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Add service to favorites
+                    favorites.add("Service Name");
+                    // Update SharedPreferences with the new set of favorites
+                    sharedPreferences[0].edit().putStringSet("favorites", favorites).apply();
+                    // Update heart icon to filled
+                    addToFavorites.setImageResource(R.drawable.baseline_favorite_24);
+                    // Update isFavorite flag
+                    isFavorite[0] = true;
+                    // Show a toast or any feedback to the user
+                    Toast.makeText(MapActivity.this, "Added to favorites", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;

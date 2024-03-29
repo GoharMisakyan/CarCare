@@ -46,6 +46,15 @@ public class NavigationBarActivity extends AppCompatActivity {
             }
         });
 
+        Button favorites = findViewById(R.id.favorites);
+        favorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NavigationBarActivity.this, FavoriteServicesActivity.class);
+                startActivity(intent);
+            }
+        });
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_home);
 
