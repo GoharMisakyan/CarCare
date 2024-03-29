@@ -56,6 +56,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/my_map_API_KEY" />
+
+        <service android:name=".SLocationService" />
     </application>
 
 </manifest>

@@ -4,16 +4,24 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -25,11 +33,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private GoogleMap myMap;
     private final int FINE_PERMISSION_CODE = 1;
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
+    private Marker samauto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +47,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
+
+
+
 
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -50,12 +62,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 return true;
             } else if (itemId == R.id.bottom_home) {
                 startActivity(new Intent(getApplicationContext(), NavigationBarActivity.class));
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_left);
+                overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
                 finish();
                 return true;
             } else if (itemId == R.id.bottom_profile) {
                 startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_left);
+                overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
                 finish();
                 return true;
             }
@@ -94,6 +106,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         myMap.moveCamera(CameraUpdateFactory.newLatLng(Samauto));
 
 
+
         LatLng MyLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -105,7 +118,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         myMap.getUiSettings().setZoomControlsEnabled(true);
         myMap.getUiSettings().setCompassEnabled(true);
 
-
+        myMap.setOnMarkerClickListener(this);
 
     }
 
@@ -122,4 +135,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
 
+    @Override
+    public boolean onMarkerClick(@NonNull Marker marker) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottom_sheet_layout);
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+
+
+        return true;
+    }
 }

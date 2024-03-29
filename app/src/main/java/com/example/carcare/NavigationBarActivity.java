@@ -56,12 +56,12 @@ public class NavigationBarActivity extends AppCompatActivity {
                 return true;
             } else if (itemId == R.id.bottom_map) {
                 startActivity(new Intent(getApplicationContext(),MapActivity.class));
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_left);
+                overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
                 finish();
                 return true;
             } else if (itemId == R.id.bottom_profile) {
                 startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_left);
+                overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
                 finish();
                 return true;
             }
