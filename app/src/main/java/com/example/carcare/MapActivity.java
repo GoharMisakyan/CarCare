@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -165,7 +166,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         addToFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Toggle the heart icon state
+
                 if (isFavorite[0]) {
                     // Remove service from favorites
                     favorites.remove("Service Name");
@@ -191,6 +192,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             }
         });
+
+        TextView seeThePricelist =  dialog.findViewById(R.id.pricelist_see);
+        seeThePricelist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapActivity.this, PricelistActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
