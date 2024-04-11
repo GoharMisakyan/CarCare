@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
     TextView alreadyuser;
-    EditText email, password, phone, name;
+    EditText email, password, confirmPassword, phone, name;
     Button sigupbtn;
     boolean valid = true;
     Switch ownerSwitch;
@@ -48,6 +48,7 @@ public class SignUpActivity extends AppCompatActivity {
         alreadyuser = findViewById(R.id.signinRedirectText);
         email = findViewById(R.id.signup_email);
         password = findViewById(R.id.signup_password);
+        confirmPassword = findViewById(R.id.confirm_password);
         name = findViewById(R.id.signup_name);
         phone = findViewById(R.id.signup_phoneNumber);
         ownerSwitch = findViewById(R.id.ownerSwitch);
@@ -61,6 +62,7 @@ public class SignUpActivity extends AppCompatActivity {
                 checkField(name);
                 checkField(email);
                 checkField(password);
+                checkField(confirmPassword);
                 checkField(phone);
 
                 if (valid) {
@@ -176,7 +178,10 @@ public class SignUpActivity extends AppCompatActivity {
         if (textField.getText().toString().isEmpty()) {
             textField.setError("Error");
             valid = false;
-        } else {
+        } else if (!confirmPassword.getText().toString().equals(password.getText().toString())){
+            valid = false;
+            Toast.makeText(SignUpActivity.this,"Passwords do not match",Toast.LENGTH_SHORT).show();
+        }else{
             valid = true;
         }
 

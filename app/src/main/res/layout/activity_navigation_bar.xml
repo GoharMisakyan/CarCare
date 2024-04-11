@@ -52,22 +52,14 @@
         android:backgroundTint="@color/royalBlue"
         android:text="Favorite Services"
         android:textColorLink="#FFFFFF" />
-    <Button
-        android:id="@+id/ServiceAndPriceLists"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@+id/favorites"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="@color/royalBlue"
-        android:text="Service and Price lists"
-        android:textColorLink="#FFFFFF" />
+
 
 
     <Button
         android:id="@+id/aboutbtn"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_below="@+id/ServiceAndPriceLists"
+        android:layout_below="@+id/favorites"
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/royalBlue"
         android:text="About"

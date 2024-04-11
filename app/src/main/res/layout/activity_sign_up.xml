@@ -85,6 +85,19 @@
                 android:padding="8dp"
                 android:textColor="@color/black" />
 
+            <EditText
+                android:id="@+id/confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/eedittext_bkg"
+                android:drawableLeft="@drawable/baseline_lock_24"
+                android:drawablePadding="8dp"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:padding="8dp"
+                android:textColor="@color/black" />
+
             <Switch
                 android:id="@+id/ownerSwitch"
                 android:layout_width="match_parent"

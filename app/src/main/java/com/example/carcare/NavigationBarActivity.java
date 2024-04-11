@@ -27,14 +27,6 @@ public class NavigationBarActivity extends AppCompatActivity {
             }
         });
 
-        Button pricelist = findViewById(R.id.ServiceAndPriceLists);
-        pricelist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NavigationBarActivity.this, PricelistActivity.class);
-                startActivity(intent);
-            }
-        });
 
 
         Button history = findViewById(R.id.ServiceHistory);
