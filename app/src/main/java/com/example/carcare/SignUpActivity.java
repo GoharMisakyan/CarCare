@@ -28,9 +28,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
-    TextView alreadyuser;
+    TextView alreadyUser;
     EditText email, password, confirmPassword, phone, name;
-    Button sigupbtn;
+    Button sigUpBtn;
     boolean valid = true;
     Switch ownerSwitch;
     FirebaseAuth fAuth;
@@ -45,18 +45,18 @@ public class SignUpActivity extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
-        alreadyuser = findViewById(R.id.signinRedirectText);
+        alreadyUser = findViewById(R.id.signinRedirectText);
         email = findViewById(R.id.signup_email);
         password = findViewById(R.id.signup_password);
         confirmPassword = findViewById(R.id.confirm_password);
         name = findViewById(R.id.signup_name);
         phone = findViewById(R.id.signup_phoneNumber);
         ownerSwitch = findViewById(R.id.ownerSwitch);
-        sigupbtn = findViewById(R.id.signup_button);
+        sigUpBtn = findViewById(R.id.signup_button);
 
         alertDialog = new AlertDialog.Builder(this).create();
 
-        sigupbtn.setOnClickListener(new View.OnClickListener() {
+        sigUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkField(name);
@@ -95,7 +95,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        alreadyuser.setOnClickListener(new View.OnClickListener() {
+        alreadyUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
@@ -142,6 +142,8 @@ public class SignUpActivity extends AppCompatActivity {
                         userInfo.put("FullName", name.getText().toString());
                         userInfo.put("UserEmail", email.getText().toString());
                         userInfo.put("PhoneNumber", phone.getText().toString());
+                        //userInfo.put("Password", password.getText().toString());
+
 
                         if (isOwner) {
                             //owner
@@ -154,8 +156,11 @@ public class SignUpActivity extends AppCompatActivity {
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        startActivity(new Intent(getApplicationContext(), MapActivity.class));
+                                        user.sendEmailVerification();
+                                        Toast.makeText(SignUpActivity.this, "Account Created! Please verify your email.", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(getApplicationContext(), SignInActivity.class));
                                         finish();
+
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -176,11 +181,17 @@ public class SignUpActivity extends AppCompatActivity {
 
     public boolean checkField(EditText textField) {
         if (textField.getText().toString().isEmpty()) {
-            textField.setError("Error");
+            textField.setError("This field can not be EMPTY");
+            //textField.requestFocus();
+
             valid = false;
         } else if (!confirmPassword.getText().toString().equals(password.getText().toString())){
             valid = false;
-            Toast.makeText(SignUpActivity.this,"Passwords do not match",Toast.LENGTH_SHORT).show();
+            confirmPassword.setError("Passwords do not match");
+            confirmPassword.requestFocus();
+            confirmPassword.clearComposingText();
+            password.clearComposingText();
+
         }else{
             valid = true;
         }

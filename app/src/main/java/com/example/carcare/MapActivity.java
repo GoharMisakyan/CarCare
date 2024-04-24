@@ -193,8 +193,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
-        TextView seeThePricelist =  dialog.findViewById(R.id.pricelist_see);
-        seeThePricelist.setOnClickListener(new View.OnClickListener() {
+        TextView seeThePriceList =  dialog.findViewById(R.id.pricelist_see);
+        seeThePriceList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapActivity.this, PricelistActivity.class);

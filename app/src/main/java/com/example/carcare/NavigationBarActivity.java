@@ -18,8 +18,8 @@ public class NavigationBarActivity extends AppCompatActivity {
 
 
 
-        Button aboutus = findViewById(R.id.aboutbtn);
-        aboutus.setOnClickListener(new View.OnClickListener() {
+        Button aboutUs = findViewById(R.id.aboutbtn);
+        aboutUs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(NavigationBarActivity.this, AboutUsActivity.class);
