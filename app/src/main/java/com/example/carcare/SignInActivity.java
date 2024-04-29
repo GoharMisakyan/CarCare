@@ -64,8 +64,8 @@ FirebaseFirestore fStore;
 
 
         notYetRegistered =findViewById(R.id.signupRedirectText);
-        email = findViewById(R.id.signin_email);
-        password = findViewById(R.id.signin_password);
+        email = findViewById(R.id.signIn_email);
+        password = findViewById(R.id.signIn_password);
         signInBtn = findViewById(R.id.signin_button);
 
         //Show/hide pwd icon

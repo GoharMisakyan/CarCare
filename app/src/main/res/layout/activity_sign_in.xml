@@ -36,8 +36,8 @@
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/signin_email"
+                android:layout_height="55dp"
+                android:id="@+id/signIn_email"
                 android:background="@drawable/edittext_bkg"
                 android:layout_marginTop="40dp"
                 android:padding="8dp"
@@ -53,10 +53,10 @@
                 android:layout_marginTop="20dp">
 
                 <EditText
-                    android:id="@+id/signin_password"
+                    android:id="@+id/signIn_password"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="50dp"
+                    android:layout_height="55dp"
                     android:background="@drawable/edittext_bkg"
                     android:drawableLeft="@drawable/baseline_lock_24"
                     android:drawablePadding="8dp"
