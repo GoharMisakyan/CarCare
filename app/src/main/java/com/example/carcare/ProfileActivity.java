@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,11 +22,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    Button logoutBtn;
+    Button logoutBtn, editBtn;
 
-    TextView profileName, profileEmail, profilePhoneNumber;
-    TextView titleName;
-    Button editBtn;
+    TextView profileName, profileEmail, profilePhoneNumber, titleName;
+
+    ImageView profilePicImg;
+
+
 
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
@@ -39,6 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
         profilePhoneNumber = findViewById(R.id.profilePhoneNumber);
         titleName = findViewById(R.id.titleName);
         editBtn = findViewById(R.id.editButton);
+        profilePicImg = findViewById(R.id.profileImg);
         fStore = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
 
@@ -77,6 +81,14 @@ public class ProfileActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(), SignInActivity.class));
                 finish();
+            }
+        });
+
+        profilePicImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, ProfilePicUpload.class);
+                startActivity(intent);
             }
         });
 
