@@ -168,6 +168,7 @@ FirebaseFirestore fStore;
 
 
     private void checkUserAccessLevel(String uid){
+        FirebaseUser user = fAuth.getCurrentUser();
         DocumentReference df = fStore.collection("Users").document(uid);
         //extracting the data
         df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -176,14 +177,24 @@ FirebaseFirestore fStore;
                 Log.d("TAG","onSuccess: " + documentSnapshot.getData());
                 // identifying access level
 
-                if(documentSnapshot.getString("isUser") != null){
+               if (user.getUid().equals("1ekcwcOSV8WttQgaFwCyLpH2Iuj2")){
+                    Intent intent = new Intent(SignInActivity.this, HomePageAdmin.class);
+                    startActivity(intent);
+                    finish();
+                } else if (documentSnapshot.getString("isUser") != null) {
+                    startActivity(new Intent(SignInActivity.this, MapActivity.class));
+
+                    finish();
+                }
+
+                /*if(documentSnapshot.getString("isUser") != null){
                     //is a regular user
 
 
                     startActivity(new Intent(SignInActivity.this, MapActivity.class));
 
                     finish();
-                }else{
+                }*/else{
                     //is an owner
 
                     startActivity(new Intent(SignInActivity.this, NavigationBarActivity.class));

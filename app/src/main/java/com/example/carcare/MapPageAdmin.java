@@ -14,7 +14,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -24,22 +23,22 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapPageAdmin extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+
     private GoogleMap myMap;
     private final int FINE_PERMISSION_CODE = 1;
     Location currentLocation;
@@ -49,7 +48,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_map_page_admin);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
@@ -67,12 +66,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             if (itemId == R.id.bottom_map) {
                 return true;
             } else if (itemId == R.id.bottom_home) {
-                startActivity(new Intent(getApplicationContext(), NavigationBarActivity.class));
+                startActivity(new Intent(getApplicationContext(), HomePageAdmin.class));
                 overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
                 finish();
                 return true;
             } else if (itemId == R.id.bottom_profile) {
-                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                startActivity(new Intent(getApplicationContext(), ProfilePageAdmin.class));
                 overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
                 finish();
                 return true;
@@ -95,7 +94,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     currentLocation = location;
 
                     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                    mapFragment.getMapAsync(MapActivity.this);
+                    mapFragment.getMapAsync(MapPageAdmin.this);
                 }
             }
         });
@@ -177,7 +176,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     // Update isFavorite flag
                     isFavorite[0] = false;
                     // Show a toast or any feedback to the user
-                    Toast.makeText(MapActivity.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MapPageAdmin.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
                 } else {
                     // Add service to favorites
                     favorites.add("SamAuto");
@@ -188,7 +187,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     // Update isFavorite flag
                     isFavorite[0] = true;
                     // Show a toast or any feedback to the user
-                    Toast.makeText(MapActivity.this, "Added to favorites", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MapPageAdmin.this, "Added to favorites", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -197,7 +196,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         seeThePriceList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this, PricelistActivity.class);
+                Intent intent = new Intent(MapPageAdmin.this, PricelistActivity.class);
                 startActivity(intent);
             }
         });

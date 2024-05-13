@@ -23,8 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-
-public class ProfileActivity extends AppCompatActivity {
+public class ProfilePageAdmin extends AppCompatActivity {
 
     Button logoutBtn, editBtn;
 
@@ -36,10 +35,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_profile_page_admin);
+
 
         profileName = findViewById(R.id.profileName);
         profileEmail = findViewById(R.id.profileEmail);
@@ -65,12 +66,12 @@ public class ProfileActivity extends AppCompatActivity {
             if (itemId == R.id.bottom_profile) {
                 return true;
             } else if (itemId == R.id.bottom_home) {
-                startActivity(new Intent(getApplicationContext(), NavigationBarActivity.class));
+                startActivity(new Intent(getApplicationContext(), HomePageAdmin.class));
                 overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
                 finish();
                 return true;
             } else if (itemId == R.id.bottom_map) {
-                startActivity(new Intent(getApplicationContext(), MapActivity.class));
+                startActivity(new Intent(getApplicationContext(), MapPageAdmin.class));
                 overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
                 finish();
                 return true;
@@ -91,7 +92,7 @@ public class ProfileActivity extends AppCompatActivity {
         profilePicImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, ProfilePicUpload.class);
+                Intent intent = new Intent(ProfilePageAdmin.this, ProfilePicUpload.class);
                 startActivity(intent);
             }
         });
@@ -103,50 +104,50 @@ public class ProfileActivity extends AppCompatActivity {
     private void getUserDataFromFirestore() {
         FirebaseUser currentUser = fAuth.getCurrentUser();
 
-            fStore.collection("Users").document(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document != null && document.exists()) {
-                            // Retrieve user data
-                            String fullName = document.getString("FullName");
-                            String phoneNumber = document.getString("PhoneNumber");
-                            String userEmail = document.getString("UserEmail");
+        fStore.collection("Users").document(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null && document.exists()) {
+                        // Retrieve user data
+                        String fullName = document.getString("FullName");
+                        String phoneNumber = document.getString("PhoneNumber");
+                        String userEmail = document.getString("UserEmail");
 
-                            // Display user data in TextViews
-                            profileName.setText(fullName);
-                            profilePhoneNumber.setText(phoneNumber);
-                            profileEmail.setText(userEmail);
-                            titleName.setText(fullName);
+                        // Display user data in TextViews
+                        profileName.setText(fullName);
+                        profilePhoneNumber.setText(phoneNumber);
+                        profileEmail.setText(userEmail);
+                        titleName.setText(fullName);
 
-                            // Load profile picture
-                            Uri photoUri = currentUser.getPhotoUrl();
-                            if (photoUri != null) {
-                                Picasso.get().load(photoUri).into(profilePicImg, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                        // Image loaded successfully
-                                    }
+                        // Load profile picture
+                        Uri photoUri = currentUser.getPhotoUrl();
+                        if (photoUri != null) {
+                            Picasso.get().load(photoUri).into(profilePicImg, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    // Image loaded successfully
+                                }
 
-                                    @Override
-                                    public void onError(Exception e) {
-                                        // Log error if image loading fails
-                                        Log.e("Picasso", "Error loading profile picture: " + e.getMessage());
-                                    }
-                                });
-                            } else {
-                                // No profile picture available
-                                Log.d("Picasso", "No profile picture available for user");
-                            }
+                                @Override
+                                public void onError(Exception e) {
+                                    // Log error if image loading fails
+                                    Log.e("Picasso", "Error loading profile picture: " + e.getMessage());
+                                }
+                            });
                         } else {
-                            Toast.makeText(ProfileActivity.this, "Document does not exist", Toast.LENGTH_SHORT).show();
+                            // No profile picture available
+                            Log.d("Picasso", "No profile picture available for user");
                         }
                     } else {
-                        Toast.makeText(ProfileActivity.this, "Failed to fetch user data", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfilePageAdmin.this, "Document does not exist", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(ProfilePageAdmin.this, "Failed to fetch user data", Toast.LENGTH_SHORT).show();
                 }
-            });
+            }
+        });
     }
 
 }

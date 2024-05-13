@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -21,6 +20,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CarCare"
         tools:targetApi="31">
+        <activity
+            android:name=".AboutUsAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".ServiceHistoryAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".PriceListPageAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".FavoriteServicesAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".ProfilePageAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".MapPageAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".HomePageAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".CarServiceApprovalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CarServiceRegistrationActivity"
+            android:exported="false" />
         <activity
             android:name=".ProfilePicUpload"
             android:exported="false" />

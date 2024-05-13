@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="#B70505"
+    tools:context=".NavigationBarActivity">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/bottom_background"
+        android:elevation="2dp"
+        android:foregroundTint="#002366"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemRippleColor="@android:color/transparent"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bottom_menu" />
+
+    <Button
+        android:id="@+id/newService"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/royalBlue"
+        android:text="New Service"
+        android:layout_marginTop="100dp"
+        android:textColorLink="#FFFFFF" />
+
+    <Button
+        android:id="@+id/ServiceHistory"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/newService"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/royalBlue"
+        android:text="Service History"
+        android:textColorLink="#FFFFFF" />
+    <Button
+        android:id="@+id/favorites"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/ServiceHistory"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/royalBlue"
+        android:text="Favorite Services"
+        android:textColorLink="#FFFFFF" />
+
+
+
+    <Button
+        android:id="@+id/aboutbtn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/favorites"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/royalBlue"
+        android:text="About"
+        android:textColorLink="#FFFFFF" />
+
+    <Button
+        android:id="@+id/requests_btn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/aboutbtn"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/royalBlue"
+        android:text="Requests"
+        android:textColorLink="#FFFFFF" />
+
+</RelativeLayout>

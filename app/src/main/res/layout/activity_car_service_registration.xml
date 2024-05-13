@@ -1,0 +1,128 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:background="@drawable/background">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.5"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp">
+
+        <LinearLayout
+            android:id="@+id/carServiceRegistrationLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Car Service Registration"
+                android:textAlignment="center"
+                android:textColor="#3059A8"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextServiceName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:hint="Auto Service Name"
+                android:drawableLeft="@drawable/baseline_car_repair_24"
+                android:drawablePadding="8dp"
+                android:background="@drawable/edittext_bkg"
+                android:padding="12dp"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/editTextLatitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Latitude"
+                android:drawableLeft="@drawable/baseline_add_location_24"
+                android:drawablePadding="8dp"
+                android:background="@drawable/edittext_bkg"
+                android:inputType="numberDecimal"
+                android:padding="12dp"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/editTextLongitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Longitude"
+                android:drawableLeft="@drawable/baseline_add_location_24"
+                android:drawablePadding="8dp"
+                android:background="@drawable/edittext_bkg"
+                android:inputType="numberDecimal"
+                android:padding="12dp"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/editTextPriceList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Price List (e.g., Service Name - Price)"
+                android:background="@drawable/edittext_bkg"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:maxLines="50"
+                android:scrollbars="vertical"
+                android:padding="12dp"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:id="@+id/imageViewUploadPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="16dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/baseline_browse_gallery_24"
+                />
+
+
+            <Button
+                android:id="@+id/buttonUploadPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#3059A8"
+                android:text="Upload Photo" />
+
+            <Button
+                android:id="@+id/buttonSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Submit"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/black"
+                android:padding="16dp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+

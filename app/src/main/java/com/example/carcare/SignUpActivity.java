@@ -3,6 +3,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,10 +33,11 @@ public class SignUpActivity extends AppCompatActivity {
     EditText email, password, confirmPassword, phone, name;
     Button sigUpBtn;
     boolean valid = true;
+    boolean approved = true;
     Switch ownerSwitch;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
-    AlertDialog alertDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,7 @@ public class SignUpActivity extends AppCompatActivity {
         ownerSwitch = findViewById(R.id.ownerSwitch);
         sigUpBtn = findViewById(R.id.signup_button);
 
-        alertDialog = new AlertDialog.Builder(this).create();
+
 
         sigUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if (valid) {
                     if (ownerSwitch.isChecked()) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
+                        /*AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
                         builder.setTitle("Enter Special Code");
                         final EditText input = new EditText(SignUpActivity.this);
                         builder.setView(input);
@@ -87,7 +89,27 @@ public class SignUpActivity extends AppCompatActivity {
                             }
                         });
 
-                        builder.show();
+                        builder.show();*/
+                        startActivity(new Intent(SignUpActivity.this, CarServiceRegistrationActivity.class));
+                        /*if (approved) {
+                            registerUser(true);
+                        }*/
+
+                        isApproved(fAuth.getCurrentUser().getUid(), new ApprovalCallback() {
+                            @Override
+                            public void onApproved(boolean approved) {
+                                if (approved) {
+                                    registerUser(true);
+                                } else {
+                                    Toast.makeText(SignUpActivity.this, "Your registration request has been rejected. Please try again later.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+                                Toast.makeText(SignUpActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     } else {
                         registerUser(false);
                     }
@@ -104,7 +126,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void checkSpecialCode(String code) {
+    /*private void checkSpecialCode(String code) {
         fStore.collection("SpecialCodes")
                 .document("G9B8b5c%b0j")
                 .get()
@@ -128,7 +150,7 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
+    }*/
 
     private void registerUser(boolean isOwner) {
         fAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
@@ -142,7 +164,7 @@ public class SignUpActivity extends AppCompatActivity {
                         userInfo.put("FullName", name.getText().toString());
                         userInfo.put("UserEmail", email.getText().toString());
                         userInfo.put("PhoneNumber", phone.getText().toString());
-                        //userInfo.put("Password", password.getText().toString());
+                       // userInfo.put("ApprovalStatus", "pending");
 
 
                         if (isOwner) {
@@ -197,5 +219,45 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+    /*public boolean isApproved(String userId) {
+        fStore.collection("approvedCarServices")
+                .document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                       approved = true;
+                    } else {
+                       approved = false;
+                        Toast.makeText(SignUpActivity.this, "Your registration request has been rejected, if you find it wrong, please try again", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("SignUpActivity", "Error checking user approval: ", e);
+                    Toast.makeText(SignUpActivity.this, "An error occurred. Please try again later.", Toast.LENGTH_SHORT).show();
+                });
+        return approved;
+    }*/
+    public void isApproved(String userId, ApprovalCallback callback) {
+        fStore.collection("approvedCarServices")
+                .document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        callback.onApproved(true);
+                    } else {
+                        callback.onApproved(false);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("SignUpActivity", "Error checking user approval: ", e);
+                    callback.onError(e.getMessage());
+                });
+    }
+
+    interface ApprovalCallback {
+        void onApproved(boolean approved);
+        void onError(String errorMessage);
     }
 }

@@ -66,7 +66,8 @@ public class ProfilePicUpload extends AppCompatActivity {
 
         //Set Users current DP in ImageView (if uploaded already).
         //Regular URIs.
-        Picasso.with(ProfilePicUpload.this).load(uri).into(imageViewUploadPic);
+        Picasso.get().load(uri).into(imageViewUploadPic);
+
 
         buttonPictureChoose.setOnClickListener(new View.OnClickListener() {
             @Override
