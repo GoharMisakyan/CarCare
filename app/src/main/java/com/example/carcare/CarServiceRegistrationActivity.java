@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -107,11 +108,11 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
 
     private void storeRegistrationData(String serviceName, String latitude, String longitude, String priceList) {
 
-        String userId = UUID.randomUUID().toString();
+        FirebaseUser user = fAuth.getCurrentUser();
 
 
         Map<String, Object> registrationData = new HashMap<>();
-        registrationData.put("id", userId);
+        registrationData.put("id", user.getUid());
         registrationData.put("serviceName", serviceName);
         // Convert latitude string to double before storing
         try {
@@ -135,7 +136,7 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
 
 
 
-        StorageReference imageRef = storageRef.child("images/" + userId + "_service_image");
+        StorageReference imageRef = storageRef.child("images/" + user.getUid() + "_service_image");
         UploadTask uploadTask = imageRef.putFile(imageUri);
         uploadTask.addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -146,11 +147,11 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
 
                     // Add registration data to Firestore
                     fStore.collection("registrationRequests")
-                            .document(userId)
+                            .document(user.getUid())
                             .set(registrationData)
                             .addOnSuccessListener(aVoid -> {
 
-                                notifyOwnerAboutRegistrationRequest(userId);
+                                notifyOwnerAboutRegistrationRequest(user.getUid());
 
                                 Toast.makeText(this, "Registration submitted for approval", Toast.LENGTH_SHORT).show();
 

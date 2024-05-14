@@ -68,51 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
                 checkField(phone);
 
                 if (valid) {
-                    if (ownerSwitch.isChecked()) {
-                        /*AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
-                        builder.setTitle("Enter Special Code");
-                        final EditText input = new EditText(SignUpActivity.this);
-                        builder.setView(input);
-
-                        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String code = input.getText().toString().trim();
-                                checkSpecialCode(code);
-                            }
-                        });
-
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-
-                        builder.show();*/
-                        startActivity(new Intent(SignUpActivity.this, CarServiceRegistrationActivity.class));
-                        /*if (approved) {
-                            registerUser(true);
-                        }*/
-
-                        isApproved(fAuth.getCurrentUser().getUid(), new ApprovalCallback() {
-                            @Override
-                            public void onApproved(boolean approved) {
-                                if (approved) {
-                                    registerUser(true);
-                                } else {
-                                    Toast.makeText(SignUpActivity.this, "Your registration request has been rejected. Please try again later.", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onError(String errorMessage) {
-                                Toast.makeText(SignUpActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    } else {
-                        registerUser(false);
-                    }
+                   registerUser();
                 }
             }
         });
@@ -152,35 +108,38 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }*/
 
-    private void registerUser(boolean isOwner) {
+    private void registerUser() {
         fAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         FirebaseUser user = fAuth.getCurrentUser();
-                        Toast.makeText(SignUpActivity.this, "Account Created!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SignUpActivity.this, "Account Created!", Toast.LENGTH_SHORT).show();
                         DocumentReference df = fStore.collection("Users").document(user.getUid());
                         Map<String, Object> userInfo = new HashMap<>();
                         userInfo.put("FullName", name.getText().toString());
                         userInfo.put("UserEmail", email.getText().toString());
                         userInfo.put("PhoneNumber", phone.getText().toString());
-                       // userInfo.put("ApprovalStatus", "pending");
-
-
-                        if (isOwner) {
-                            //owner
-                        } else {
-                            // regular user
-                            userInfo.put("isUser", 1);
-                        }
+                        userInfo.put("isOwner", ownerSwitch.isChecked() ? 1 : null);  // 1 for owner, 0 for regular user
 
                         df.set(userInfo)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         user.sendEmailVerification();
-                                        Toast.makeText(SignUpActivity.this, "Account Created! Please verify your email.", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                                        Toast.makeText(SignUpActivity.this, "Account Created!", Toast.LENGTH_SHORT).show();
+                                        //startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                                        //finish();
+                                        if (ownerSwitch.isChecked()) {
+                                            fAuth.signOut();
+                                            startActivity(new Intent(SignUpActivity.this, CarServiceRegistrationActivity.class));
+                                            Toast.makeText(SignUpActivity.this, "Please Fill In details about yourCar Service, Submit them and wait for the approval result.", Toast.LENGTH_LONG).show();
+                                        } else {
+                                            Toast.makeText(SignUpActivity.this, "Please verify your email and come back to sign in", Toast.LENGTH_SHORT).show();
+                                            fAuth.signOut();
+                                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                                        }
+
                                         finish();
 
                                     }

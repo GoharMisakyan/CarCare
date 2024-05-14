@@ -181,8 +181,9 @@ FirebaseFirestore fStore;
                     Intent intent = new Intent(SignInActivity.this, HomePageAdmin.class);
                     startActivity(intent);
                     finish();
-                } else if (documentSnapshot.getString("isUser") != null) {
-                    startActivity(new Intent(SignInActivity.this, MapActivity.class));
+                } else if (documentSnapshot.getString("isOwner") != null) {
+                   //is an owner
+                    startActivity(new Intent(SignInActivity.this, NavigationBarActivity.class));
 
                     finish();
                 }
@@ -195,9 +196,9 @@ FirebaseFirestore fStore;
 
                     finish();
                 }*/else{
-                    //is an owner
+                    //is an user
 
-                    startActivity(new Intent(SignInActivity.this, NavigationBarActivity.class));
+                    startActivity(new Intent(SignInActivity.this, MapActivity.class));
                     finish();
                 }
 
