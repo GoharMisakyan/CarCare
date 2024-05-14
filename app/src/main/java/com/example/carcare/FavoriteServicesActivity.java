@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +55,10 @@ public class FavoriteServicesActivity extends AppCompatActivity {
 
         // Retrieve list of favorite services and update RecyclerView
         updateFavoriteServices();
+//new
+        ItemTouchHelper.Callback callback = new SwipeToDeleteCallback(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -62,6 +67,8 @@ public class FavoriteServicesActivity extends AppCompatActivity {
         // Refresh favorite services when the activity is resumed
         updateFavoriteServices();
     }
+
+
 
     private void updateFavoriteServices() {
         // Retrieve list of favorite services from SharedPreferences or data source
@@ -77,5 +84,8 @@ public class FavoriteServicesActivity extends AppCompatActivity {
             adapter.updateData(favoriteServices);
             adapter.notifyDataSetChanged();
         }
+
+
+
     }
 }

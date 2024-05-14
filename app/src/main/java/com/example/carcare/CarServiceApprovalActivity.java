@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -29,6 +31,7 @@ public class CarServiceApprovalActivity extends AppCompatActivity {
     private List<CarService> carServiceList;
     private CarServiceAdapter adapter;
     private FirebaseFirestore fStore;
+    private FirebaseAuth fAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +172,7 @@ public class CarServiceApprovalActivity extends AppCompatActivity {
 
             private void rejectRequest(CarService carService) {
                 String ownerId = "1ekcwcOSV8WttQgaFwCyLpH2Iuj2"; // Replace with actual owner user ID
+                FirebaseUser user = fAuth.getCurrentUser();
 
                 fStore.collection("approvalRequests")
                         .document(ownerId)

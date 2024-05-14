@@ -1,6 +1,7 @@
 package com.example.carcare;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +57,11 @@ public class FavoriteServicesAdmin extends AppCompatActivity {
 
         // Retrieve list of favorite services and update RecyclerView
         updateFavoriteServices();
+
+        //new
+        ItemTouchHelper.Callback callback = new SwipeToDeleteCallback(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
