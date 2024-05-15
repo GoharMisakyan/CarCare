@@ -47,7 +47,7 @@ public class FavoriteServicesAdapter extends RecyclerView.Adapter<FavoriteServic
     }
 
 
-//new
+
     public void deleteItem(int position) {
         favoriteServices.remove(position);
         notifyItemRemoved(position);
@@ -71,7 +71,7 @@ public class FavoriteServicesAdapter extends RecyclerView.Adapter<FavoriteServic
             rateStar3 = itemView.findViewById(R.id.imageView3);
 
 
-            //new
+
             // Implement swipe gesture detection
             itemView.setOnTouchListener(new View.OnTouchListener() {
                 private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {

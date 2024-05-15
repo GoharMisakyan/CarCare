@@ -114,7 +114,7 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         FirebaseUser user = fAuth.getCurrentUser();
-                        //Toast.makeText(SignUpActivity.this, "Account Created!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUpActivity.this, "Your Account has been Created!", Toast.LENGTH_SHORT).show();
                         DocumentReference df = fStore.collection("Users").document(user.getUid());
                         Map<String, Object> userInfo = new HashMap<>();
                         userInfo.put("FullName", name.getText().toString());
@@ -127,11 +127,10 @@ public class SignUpActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         user.sendEmailVerification();
-                                        Toast.makeText(SignUpActivity.this, "Account Created!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignUpActivity.this, "All the data has been saved", Toast.LENGTH_SHORT).show();
                                         //startActivity(new Intent(getApplicationContext(), SignInActivity.class));
                                         //finish();
                                         if (ownerSwitch.isChecked()) {
-                                            fAuth.signOut();
                                             startActivity(new Intent(SignUpActivity.this, CarServiceRegistrationActivity.class));
                                             Toast.makeText(SignUpActivity.this, "Please Fill In details about yourCar Service, Submit them and wait for the approval result.", Toast.LENGTH_LONG).show();
                                         } else {
@@ -198,7 +197,7 @@ public class SignUpActivity extends AppCompatActivity {
                 });
         return approved;
     }*/
-    public void isApproved(String userId, ApprovalCallback callback) {
+    /*public void isApproved(String userId, ApprovalCallback callback) {
         fStore.collection("approvedCarServices")
                 .document(userId)
                 .get()
@@ -218,5 +217,5 @@ public class SignUpActivity extends AppCompatActivity {
     interface ApprovalCallback {
         void onApproved(boolean approved);
         void onError(String errorMessage);
-    }
+    }*/
 }

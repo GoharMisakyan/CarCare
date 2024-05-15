@@ -22,7 +22,6 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class CarServiceRegistrationActivity extends AppCompatActivity {
 
@@ -103,12 +102,18 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
             return;
         }
 
-        storeRegistrationData(serviceName, latitude, longitude, priceList);
+        //storeRegistrationData(serviceName, latitude, longitude, priceList);
+        FirebaseUser user = fAuth.getCurrentUser();
+        if (user != null) {
+            storeRegistrationData(user, serviceName, latitude, longitude, priceList);
+        } else {
+            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void storeRegistrationData(String serviceName, String latitude, String longitude, String priceList) {
+    private void storeRegistrationData(FirebaseUser user, String serviceName, String latitude, String longitude, String priceList) {
 
-        FirebaseUser user = fAuth.getCurrentUser();
+       // FirebaseUser user = fAuth.getCurrentUser();
 
 
         Map<String, Object> registrationData = new HashMap<>();
@@ -162,6 +167,9 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
                                 editTextPriceList.setText("");
                                 imageViewUploadPhoto.setImageResource(R.drawable.baseline_browse_gallery_24);
                                 imageUri = null;
+
+                                fAuth.signOut();
+                                startActivity(new Intent(getApplicationContext(), SignInActivity.class));
                             })
                             .addOnFailureListener(e -> {
 
