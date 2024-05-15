@@ -45,7 +45,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -53,6 +55,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private final int FINE_PERMISSION_CODE = 1;
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
+    private Map<String, String> priceListMap = new HashMap<>();
     private Marker samauto;
 
     @Override
@@ -190,6 +193,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         // Get service name from the document
+                        String priceList = document.getString("priceList");
+                        priceListMap.put(document.getId(), priceList);
+
                         String serviceName = document.getString("serviceName");
                         if (serviceName != null) {
                             serviceNameTxt.setText(serviceName);
@@ -249,7 +255,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         seeThePriceList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this, PricelistActivity.class);
+                String serviceId = marker.getTitle();
+                String priceList = priceListMap.get(serviceId);
+                Intent intent = new Intent(MapActivity.this, PriceListPageAdmin.class);
+                intent.putExtra("priceList", priceList);
                 startActivity(intent);
             }
         });
