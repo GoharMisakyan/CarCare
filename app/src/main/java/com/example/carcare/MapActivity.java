@@ -17,7 +17,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -122,28 +121,26 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         fStore.collection("approvedCarServices").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        String latitudeStr = document.getString("latitude");
-                        String longitudeStr = document.getString("longitude");
+                        if (document.contains("latitude") && document.contains("longitude")) {
+                            double latitude = document.getDouble("latitude");
+                            double longitude = document.getDouble("longitude");
 
-                        // Parse latitude and longitude strings into doubles
-                        double latitude = Double.parseDouble(latitudeStr);
-                        double longitude = Double.parseDouble(longitudeStr);
+                            // Verify latitude and longitude values
+                            Log.d("FirestoreData", "Latitude: " + latitude + ", Longitude: " + longitude);
 
-                        LatLng serviceLocation = new LatLng(latitude, longitude);
-                        myMap.addMarker(new MarkerOptions().position(serviceLocation).title(document.getId()));
+                            LatLng serviceLocation = new LatLng(latitude, longitude);
+                            myMap.addMarker(new MarkerOptions().position(serviceLocation).title(document.getId()));
+                        } else {
+                            Log.e("FirestoreError", "Latitude or longitude field not found in document: " + document.getId());
+                        }
                     }
                 } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
+                    Log.e("FirestoreError", "Error getting documents: ", task.getException());
                 }
             }
         });
-
-
-
-
-
 
 
         LatLng MyLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
@@ -179,50 +176,72 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottom_sheet_layout);
-        dialog.show();
 
-        // Find the heart icon and set OnClickListener
-        ImageView addToFavorites = dialog.findViewById(R.id.add_to_fav);
+        TextView serviceNameTxt = dialog.findViewById(R.id.service_name_txt);
+        Log.d("Debug", "serviceNameTxt: " + serviceNameTxt);
 
-        // Check if the service is already in favorites
-        final SharedPreferences[] sharedPreferences = {getSharedPreferences("MyFavorites", Context.MODE_PRIVATE)};
-        Set<String> favorites = sharedPreferences[0].getStringSet("favorites", new HashSet<String>());
-        final boolean[] isFavorite = {favorites.contains("SamAuto")};
 
-        // Update the heart icon state accordingly
-        if (isFavorite[0]) {
-            addToFavorites.setImageResource(R.drawable.baseline_favorite_24); // Filled heart
-        } else {
-            addToFavorites.setImageResource(R.drawable.baseline_favorite_border_24); // Unfilled heart
-        }
-
-        addToFavorites.setOnClickListener(new View.OnClickListener() {
+       String documentId = marker.getTitle();
+        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+        fStore.collection("approvedCarServices").document(documentId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onClick(View v) {
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Get service name from the document
+                        String serviceName = document.getString("serviceName");
+                        if (serviceName != null) {
+                            serviceNameTxt.setText(serviceName);
+                        } else {
+                            // If service name is null, use the document ID as fallback
+                            serviceNameTxt.setText("No service name found");
+                        }
 
-                if (isFavorite[0]) {
-                    // Remove service from favorites
-                    favorites.remove("SamAuto");
-                    // Update SharedPreferences with the new set of favorites
-                    sharedPreferences[0].edit().putStringSet("favorites", favorites).apply();
-                    // Update heart icon to unfilled
-                    addToFavorites.setImageResource(R.drawable.baseline_favorite_border_24);
-                    // Update isFavorite flag
-                    isFavorite[0] = false;
-                    // Show a toast or any feedback to the user
-                    Toast.makeText(MapActivity.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Add service to favorites
-                    favorites.add("SamAuto");
-                    // Update SharedPreferences with the new set of favorites
-                    sharedPreferences[0].edit().putStringSet("favorites", favorites).apply();
-                    // Update heart icon to filled
-                    addToFavorites.setImageResource(R.drawable.baseline_favorite_24);
-                    // Update isFavorite flag
-                    isFavorite[0] = true;
-                    // Show a toast or any feedback to the user
-                    Toast.makeText(MapActivity.this, "Added to favorites", Toast.LENGTH_SHORT).show();
+                        // Find the heart icon and set OnClickListener
+                        ImageView addToFavorites = dialog.findViewById(R.id.add_to_fav);
+
+                        // Get favorites from SharedPreferences
+                        SharedPreferences sharedPreferences = getSharedPreferences("MyFavorites", Context.MODE_PRIVATE);
+                        Set<String> favorites = sharedPreferences.getStringSet("favorites", new HashSet<String>());
+
+                        // Update the heart icon state accordingly
+                        if (favorites.contains(serviceName)) {
+                            addToFavorites.setImageResource(R.drawable.baseline_favorite_24); // Filled heart
+                        } else {
+                            addToFavorites.setImageResource(R.drawable.baseline_favorite_border_24); // Unfilled heart
+                        }
+
+                        addToFavorites.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // Get favorites from SharedPreferences
+                                Set<String> favorites = sharedPreferences.getStringSet("favorites", new HashSet<String>());
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                if (favorites.contains(serviceName)) {
+                                    // Remove service from favorites
+                                    favorites.remove(serviceName);
+                                    // Update SharedPreferences with the new set of favorites
+                                    editor.putStringSet("favorites", favorites).apply();
+                                    // Update heart icon to unfilled
+                                    addToFavorites.setImageResource(R.drawable.baseline_favorite_border_24);
+                                    // Show a toast or any feedback to the user
+                                    Toast.makeText(MapActivity.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Add service to favorites
+                                    favorites.add(serviceName);
+                                    // Update SharedPreferences with the new set of favorites
+                                    editor.putStringSet("favorites", favorites).apply();
+                                    // Update heart icon to filled
+                                    addToFavorites.setImageResource(R.drawable.baseline_favorite_24);
+                                    // Show a toast or any feedback to the user
+                                    Toast.makeText(MapActivity.this, "Added to favorites", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
                 }
+                dialog.show(); // Show the dialog after retrieving service name
             }
         });
 

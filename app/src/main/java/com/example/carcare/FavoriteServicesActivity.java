@@ -55,7 +55,7 @@ public class FavoriteServicesActivity extends AppCompatActivity {
 
         // Retrieve list of favorite services and update RecyclerView
         updateFavoriteServices();
-//new
+
         ItemTouchHelper.Callback callback = new SwipeToDeleteCallback(adapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -64,14 +64,13 @@ public class FavoriteServicesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Refresh favorite services when the activity is resumed
         updateFavoriteServices();
     }
 
 
 
     private void updateFavoriteServices() {
-        // Retrieve list of favorite services from SharedPreferences or data source
+
         SharedPreferences sharedPreferences = getSharedPreferences("MyFavorites", Context.MODE_PRIVATE);
         Set<String> favoritesSet = sharedPreferences.getStringSet("favorites", new HashSet<>());
         favoriteServices = new ArrayList<>(favoritesSet);
