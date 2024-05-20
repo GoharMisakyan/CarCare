@@ -137,8 +137,16 @@ public class FavoriteServicesAdapter extends RecyclerView.Adapter<FavoriteServic
         fStore.collection("Users").document(userId)
                 .collection("favoriteServiceList").document(serviceId)
                 .delete()
-                .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted"))
-                .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "DocumentSnapshot successfully deleted");
+                    // Show a Toast message indicating successful deletion
+                    Toast.makeText(context, "Service deleted from favorites", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Log.w(TAG, "Error deleting document", e);
+                    // Show a Toast message indicating deletion failure
+                    Toast.makeText(context, "Failed to delete the service", Toast.LENGTH_SHORT).show();
+                });
     }
 
 }

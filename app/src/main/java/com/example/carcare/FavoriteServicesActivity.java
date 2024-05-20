@@ -3,6 +3,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -58,39 +59,77 @@ public class FavoriteServicesActivity extends AppCompatActivity {
         FirebaseUser currentUser = fAuth.getCurrentUser();
         userId = currentUser != null ? currentUser.getUid() : "";
 
-        // Initialize RecyclerView and layout manager
-        recyclerView = findViewById(R.id.recycler_view_favorite_services);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        fetchFavoriteServices();
 
-        // Initialize adapter
-        adapter = new FavoriteServicesAdapter(this, favoriteServices, userId);
-        recyclerView.setAdapter(adapter);
+        Log.d("FavoriteServicesAdmin", "Adapter set with initial data: " + favoriteServices.size());
 
-        // Retrieve list of favorite services and update RecyclerView
-        updateFavoriteServices();
 
-        ItemTouchHelper.Callback callback = new SwipeToDeleteCallback(adapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateFavoriteServices();
+
+        fetchFavoriteServices();
     }
 
-    private void updateFavoriteServices() {
+    private void fetchFavoriteServices() {
         FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+
         fStore.collection("Users").document(userId).collection("favoriteServiceList").get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
+                Log.d("FavoriteServicesAdmin", "Retrieved favorite services: " + task.getResult().getDocuments().size());
+
                 favoriteServices.clear();
-                for (DocumentSnapshot document : task.getResult().getDocuments()) {
-                    favoriteServices.add(document.getId());
+                List<DocumentSnapshot> documents = task.getResult().getDocuments();
+                for (DocumentSnapshot document : documents) {
+                    // Getting the ID of the favorite service
+                    String serviceId = document.getId();
+
+                    // Retrieving the corresponding service document from Firestore
+                    fStore.collection("approvedCarServices").document(serviceId).get().addOnSuccessListener(serviceDocument -> {
+                        if (serviceDocument.exists()) {
+                            // Getting the service name from the service document
+                            String serviceName = serviceDocument.getString("serviceName");
+                            if (serviceName != null && !favoriteServices.contains(serviceName)) {
+                                // Adding the service name to the list of favorite services if it's not already present
+                                favoriteServices.add(serviceName);
+                                Log.d("FavoriteServicesAdmin", "Service added: " + serviceName);
+                            }
+                        } else {
+                            Log.d("FavoriteServicesAdmin", "Service document does not exist: " + serviceId);
+                        }
+
+                        // Checking if all documents have been processed
+                        if (favoriteServices.size() == documents.size()) {
+                            Log.d("FavoriteServicesAdmin", "All services added. Updating adapter.");
+                            initRecyclerView();
+
+                        }
+                    }).addOnFailureListener(e -> Log.e("FavoriteServicesAdmin", "Error getting service document: ", e));
                 }
-                adapter.updateData(favoriteServices); // Update adapter with new data
+
+                Log.d("FavoriteServicesAdmin", "Favorite services list size: " + favoriteServices.size());
+                for (String service : favoriteServices) {
+                    Log.d("FavoriteServicesAdmin", "Service: " + service);
+                }
+            } else {
+                Log.e("FavoriteServicesAdmin", "Error getting favorite services: ", task.getException());
             }
         });
+    }
+
+
+    private void initRecyclerView() {
+        recyclerView = findViewById(R.id.recycler_view_favorite_services);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new FavoriteServicesAdapter(this, favoriteServices, userId);
+        recyclerView.setAdapter(adapter);
+
+
+        ItemTouchHelper.Callback callback = new SwipeToDeleteCallback(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 }
