@@ -37,6 +37,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -55,6 +58,7 @@ public class MapPageAdmin extends AppCompatActivity implements OnMapReadyCallbac
     FusedLocationProviderClient fusedLocationProviderClient;
     private Marker samauto;
     private Map<String, String> priceListMap = new HashMap<>();
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +68,9 @@ public class MapPageAdmin extends AppCompatActivity implements OnMapReadyCallbac
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
 
-
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = fAuth.getCurrentUser();
+        userId = currentUser != null ? currentUser.getUid() : "";
 
 
 
@@ -189,62 +195,52 @@ public class MapPageAdmin extends AppCompatActivity implements OnMapReadyCallbac
                 if(task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        // Get service name from the document
+
+
                         String priceList = document.getString("priceList");
                         priceListMap.put(document.getId(), priceList);
+
 
                         String serviceName = document.getString("serviceName");
                         if (serviceName != null) {
                             serviceNameTxt.setText(serviceName);
                         } else {
-                            // If service name is null, use the document ID as fallback
                             serviceNameTxt.setText("No service name found");
                         }
 
-                        // Find the heart icon and set OnClickListener
                         ImageView addToFavorites = dialog.findViewById(R.id.add_to_fav);
-
-                        // Get favorites from SharedPreferences
-                        SharedPreferences sharedPreferences = getSharedPreferences("MyFavorites", Context.MODE_PRIVATE);
-                        Set<String> favorites = sharedPreferences.getStringSet("favorites", new HashSet<String>());
-
-                        // Update the heart icon state accordingly
-                        if (favorites.contains(serviceName)) {
-                            addToFavorites.setImageResource(R.drawable.baseline_favorite_24); // Filled heart
-                        } else {
-                            addToFavorites.setImageResource(R.drawable.baseline_favorite_border_24); // Unfilled heart
-                        }
-
-                        addToFavorites.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                // Get favorites from SharedPreferences
-                                Set<String> favorites = sharedPreferences.getStringSet("favorites", new HashSet<String>());
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                if (favorites.contains(serviceName)) {
-                                    // Remove service from favorites
-                                    favorites.remove(serviceName);
-                                    // Update SharedPreferences with the new set of favorites
-                                    editor.putStringSet("favorites", favorites).apply();
-                                    // Update heart icon to unfilled
-                                    addToFavorites.setImageResource(R.drawable.baseline_favorite_border_24);
-                                    // Show a toast or any feedback to the user
-                                    Toast.makeText(MapPageAdmin.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    // Add service to favorites
-                                    favorites.add(serviceName);
-                                    // Update SharedPreferences with the new set of favorites
-                                    editor.putStringSet("favorites", favorites).apply();
-                                    // Update heart icon to filled
-                                    addToFavorites.setImageResource(R.drawable.baseline_favorite_24);
-                                    // Show a toast or any feedback to the user
-                                    Toast.makeText(MapPageAdmin.this, "Added to favorites", Toast.LENGTH_SHORT).show();
-                                }
+                        fStore.collection("Users").document(userId).collection("favoriteServiceList").document(documentId).get().addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful() && task1.getResult().exists()) {
+                                // Service is already favorite, set the heart icon to filled
+                                addToFavorites.setImageResource(R.drawable.baseline_favorite_24); // Filled heart
+                            } else {
+                                // Service is not favorite, set the heart icon to unfilled
+                                addToFavorites.setImageResource(R.drawable.baseline_favorite_border_24); // Unfilled heart
                             }
+                        });
+
+                        addToFavorites.setOnClickListener(v -> {
+                            DocumentReference serviceRef = fStore.collection("Users").document(userId).collection("favoriteServiceList").document(documentId);
+                            serviceRef.get().addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful() && task1.getResult().exists()) {
+                                    // Service is already favorite, remove it
+                                    serviceRef.delete().addOnSuccessListener(aVoid -> {
+                                        addToFavorites.setImageResource(R.drawable.baseline_favorite_border_24);
+                                        Toast.makeText(MapPageAdmin.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                                    });
+                                } else {
+                                    // Service is not favorite, add it
+                                    Map<String, Object> data = new HashMap<>();
+                                    serviceRef.set(data).addOnSuccessListener(aVoid -> {
+                                        addToFavorites.setImageResource(R.drawable.baseline_favorite_24);
+                                        Toast.makeText(MapPageAdmin.this, "Added to favorites", Toast.LENGTH_SHORT).show();
+                                    });
+                                }
+                            });
                         });
                     }
                 }
-                dialog.show(); // Show the dialog after retrieving service name
+                dialog.show();
             }
         });
 
@@ -259,6 +255,7 @@ public class MapPageAdmin extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
             }
         });
+
 
 
 

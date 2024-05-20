@@ -133,8 +133,13 @@ public class ProfilePicUpload extends AppCompatActivity {
                     });
 
                     Toast.makeText(ProfilePicUpload.this,"Upload Successful",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(ProfilePicUpload.this, ProfileActivity.class);
-                    startActivity(intent);
+                    FirebaseUser user = fAuth.getCurrentUser();
+                    if (user.getUid().equals("1ekcwcOSV8WttQgaFwCyLpH2Iuj2")){
+                        Intent intent = new Intent(ProfilePicUpload.this, ProfilePageAdmin.class);
+                    }else{
+                        Intent intent = new Intent(ProfilePicUpload.this, ProfileActivity.class);
+                        startActivity(intent);
+                    }
                     finish();
                 }
             }).addOnFailureListener(new OnFailureListener() {

@@ -33,6 +33,7 @@ public class PriceListAdapter extends RecyclerView.Adapter<PriceListAdapter.View
 
     @Override
     public int getItemCount() {
+
         return priceItems.size();
     }
 

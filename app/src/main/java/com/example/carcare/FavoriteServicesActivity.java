@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +24,7 @@ public class FavoriteServicesActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FavoriteServicesAdapter adapter;
     private List<String> favoriteServices = new ArrayList<>();
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +40,7 @@ public class FavoriteServicesActivity extends AppCompatActivity {
             if (itemId == R.id.bottom_home) {
                 return true;
             } else if (itemId == R.id.bottom_map) {
-                startActivity(new Intent(getApplicationContext(),MapActivity.class));
+                startActivity(new Intent(getApplicationContext(), MapActivity.class));
                 overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
                 finish();
                 return true;
@@ -49,9 +54,17 @@ public class FavoriteServicesActivity extends AppCompatActivity {
             throw new IllegalStateException("Unexpected value: " + itemId);
         });
 
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = fAuth.getCurrentUser();
+        userId = currentUser != null ? currentUser.getUid() : "";
+
         // Initialize RecyclerView and layout manager
         recyclerView = findViewById(R.id.recycler_view_favorite_services);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Initialize adapter
+        adapter = new FavoriteServicesAdapter(this, favoriteServices, userId);
+        recyclerView.setAdapter(adapter);
 
         // Retrieve list of favorite services and update RecyclerView
         updateFavoriteServices();
@@ -61,30 +74,23 @@ public class FavoriteServicesActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
         updateFavoriteServices();
     }
 
-
-
     private void updateFavoriteServices() {
-
-        SharedPreferences sharedPreferences = getSharedPreferences("MyFavorites", Context.MODE_PRIVATE);
-        Set<String> favoritesSet = sharedPreferences.getStringSet("favorites", new HashSet<>());
-        favoriteServices = new ArrayList<>(favoritesSet);
-
-        // Initialize or update adapter with the new list of favorite services
-        if (adapter == null) {
-            adapter = new FavoriteServicesAdapter(this, favoriteServices);
-            recyclerView.setAdapter(adapter);
-        } else {
-            adapter.updateData(favoriteServices);
-            adapter.notifyDataSetChanged();
-        }
-
-
-
+        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+        fStore.collection("Users").document(userId).collection("favoriteServiceList").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                favoriteServices.clear();
+                for (DocumentSnapshot document : task.getResult().getDocuments()) {
+                    favoriteServices.add(document.getId());
+                }
+                adapter.updateData(favoriteServices); // Update adapter with new data
+            }
+        });
     }
 }

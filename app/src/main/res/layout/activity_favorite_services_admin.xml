@@ -20,7 +20,9 @@
             android:id="@+id/recycler_view_favorite_services"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="0dp" />
+            android:visibility="visible"
+            android:padding="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     </LinearLayout>
 

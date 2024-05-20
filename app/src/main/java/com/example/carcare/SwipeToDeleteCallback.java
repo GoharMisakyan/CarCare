@@ -26,6 +26,7 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.Callback{
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         int position = viewHolder.getAdapterPosition();
+
         mAdapter.deleteItem(position);
     }
 

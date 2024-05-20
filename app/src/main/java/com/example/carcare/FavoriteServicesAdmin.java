@@ -9,8 +9,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,6 +29,7 @@ public class FavoriteServicesAdmin extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FavoriteServicesAdapter adapter;
     private List<String> favoriteServices = new ArrayList<>();
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,39 +59,83 @@ public class FavoriteServicesAdmin extends AppCompatActivity {
             throw new IllegalStateException("Unexpected value: " + itemId);
         });
 
-        // Initialize RecyclerView and layout manager
-        recyclerView = findViewById(R.id.recycler_view_favorite_services);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = fAuth.getCurrentUser();
+        userId = currentUser != null ? currentUser.getUid() : "";
 
-        // Retrieve list of favorite services and update RecyclerView
-        updateFavoriteServices();
 
-        //new
-        ItemTouchHelper.Callback callback = new SwipeToDeleteCallback(adapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        fetchFavoriteServices();
+
+        Log.d("FavoriteServicesAdmin", "Adapter set with initial data: " + favoriteServices.size());
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Refresh favorite services when the activity is resumed
-        updateFavoriteServices();
+        // Refreshing favorite services when the activity is resumed
+        fetchFavoriteServices();
     }
 
-    private void updateFavoriteServices() {
-        // Retrieve list of favorite services from SharedPreferences or data source
-        SharedPreferences sharedPreferences = getSharedPreferences("MyFavorites", Context.MODE_PRIVATE);
-        Set<String> favoritesSet = sharedPreferences.getStringSet("favorites", new HashSet<>());
-        favoriteServices = new ArrayList<>(favoritesSet);
+    private void fetchFavoriteServices() {
+        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
 
-        // Initialize or update adapter with the new list of favorite services
-        if (adapter == null) {
-            adapter = new FavoriteServicesAdapter(this, favoriteServices);
-            recyclerView.setAdapter(adapter);
-        } else {
-            adapter.updateData(favoriteServices);
-            adapter.notifyDataSetChanged();
-        }
+        fStore.collection("Users").document(userId).collection("favoriteServiceList").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                Log.d("FavoriteServicesAdmin", "Retrieved favorite services: " + task.getResult().getDocuments().size());
+
+                favoriteServices.clear();
+                List<DocumentSnapshot> documents = task.getResult().getDocuments();
+                for (DocumentSnapshot document : documents) {
+                    // Getting the ID of the favorite service
+                    String serviceId = document.getId();
+
+                    // Retrieving the corresponding service document from Firestore
+                    fStore.collection("approvedCarServices").document(serviceId).get().addOnSuccessListener(serviceDocument -> {
+                        if (serviceDocument.exists()) {
+                            // Getting the service name from the service document
+                            String serviceName = serviceDocument.getString("serviceName");
+                            if (serviceName != null && !favoriteServices.contains(serviceName)) {
+                                // Adding the service name to the list of favorite services if it's not already present
+                                favoriteServices.add(serviceName);
+                                Log.d("FavoriteServicesAdmin", "Service added: " + serviceName);
+                            }
+                        } else {
+                            Log.d("FavoriteServicesAdmin", "Service document does not exist: " + serviceId);
+                        }
+
+                        // Checking if all documents have been processed
+                        if (favoriteServices.size() == documents.size()) {
+                            Log.d("FavoriteServicesAdmin", "All services added. Updating adapter.");
+                            initRecyclerView();
+
+                        }
+                    }).addOnFailureListener(e -> Log.e("FavoriteServicesAdmin", "Error getting service document: ", e));
+                }
+
+                Log.d("FavoriteServicesAdmin", "Favorite services list size: " + favoriteServices.size());
+                for (String service : favoriteServices) {
+                    Log.d("FavoriteServicesAdmin", "Service: " + service);
+                }
+            } else {
+                Log.e("FavoriteServicesAdmin", "Error getting favorite services: ", task.getException());
+            }
+        });
     }
+
+
+    private void initRecyclerView() {
+        recyclerView = findViewById(R.id.recycler_view_favorite_services);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new FavoriteServicesAdapter(this, favoriteServices, userId);
+        recyclerView.setAdapter(adapter);
+
+
+        ItemTouchHelper.Callback callback = new SwipeToDeleteCallback(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
 }
+

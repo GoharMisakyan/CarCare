@@ -21,42 +21,27 @@
             android:id="@+id/service_name_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="viewStart"
-            android:text="Service Name"
-            android:padding="8dp"
-            android:textColor="@color/royalBlue"
             android:layout_marginStart="12dp"
+            android:layout_marginLeft="3dp"
             android:layout_marginTop="5dp"
-            android:textSize="25dp" />
+            android:layout_marginRight="3dp"
+            android:padding="8dp"
+            android:text="Service Name"
+            android:textAlignment="viewStart"
+            android:textColor="@color/royalBlue"
+            android:textSize="20dp" />
 
-        <ImageView
+        <RatingBar
+            android:id="@+id/rating_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_star_rate_24"
-            android:layout_marginLeft="80dp"
-            android:layout_marginTop="16dp" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_star_rate_24"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_star_rate_24"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="20dp"
-            android:text="3.0"
-            android:textStyle="bold"/>
-
-
-
+            android:numStars="5"
+            android:progressTint="#ffed00"
+            android:rating="5"
+            android:stepSize="1"
+            android:scaleY="0.75"
+            android:scaleX="0.75"
+            />
 
     </LinearLayout>
 
@@ -112,7 +97,6 @@
             android:textSize="16sp"/>
 
     </LinearLayout>
-
 
 
 </LinearLayout>
