@@ -1,6 +1,7 @@
 package com.example.carcare;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,10 +9,13 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class PriceListPageAdmin extends AppCompatActivity {
+
+    private PriceListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +28,32 @@ public class PriceListPageAdmin extends AppCompatActivity {
         String priceList = getIntent().getStringExtra("priceList");
 
         if (priceList != null) {
-            List<String> priceItems = Arrays.asList(priceList.split("\\\\n"));
-            PriceListAdapter adapter = new PriceListAdapter(priceItems);
+            List<String> priceItems = new ArrayList<>(Arrays.asList(priceList.split("\\\\n")));
+            adapter = new PriceListAdapter(priceItems);
             recyclerView.setAdapter(adapter);
         } else {
             // Handle the case where priceList is null, maybe display a message or take some other action
             Toast.makeText(this, "Price list is empty", Toast.LENGTH_SHORT).show();
+        }
+
+
+        SearchView searchView = findViewById(R.id.search_badge);
+        if (searchView != null) {
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    adapter.getFilter().filter(newText);
+                    return false;
+                }
+            });
+        } else {
+            // Handle the case where searchView is null
+            Toast.makeText(this, "SearchView not found", Toast.LENGTH_SHORT).show();
         }
     }
 }

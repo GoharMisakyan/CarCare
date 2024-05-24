@@ -6,17 +6,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@drawable/background"
+    android:background="@drawable/pricelist_backrgound"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/priceListTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Provided Services and Prices"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
+    <androidx.appcompat.widget.SearchView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/searchview_bkg"
+        android:id="@+id/search_badge"
+        app:queryHint="Search for Services ...."
+        app:iconifiedByDefault="false">
+
+    </androidx.appcompat.widget.SearchView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/priceListRecyclerView"
