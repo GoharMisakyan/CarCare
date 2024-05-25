@@ -47,6 +47,33 @@
 
 
     <LinearLayout
+        android:id="@+id/layout_Call_btm"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_phone_24"/>
+
+        <TextView
+            android:id="@+id/phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123456741"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginLeft="30dp"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
         android:id="@+id/Favorites_btm_sheet"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -72,6 +99,8 @@
             android:textSize="16sp"/>
 
     </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/layout_Pricelist_bottom"

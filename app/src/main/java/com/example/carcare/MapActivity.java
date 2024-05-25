@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -185,6 +186,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         TextView serviceNameTxt = dialog.findViewById(R.id.service_name_txt);
         Log.d("Debug", "serviceNameTxt: " + serviceNameTxt);
+        TextView phoneTxt = dialog.findViewById(R.id.phone_number);
+
 
 
         String documentId = marker.getTitle();
@@ -195,6 +198,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 if(task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+
+                        String phoneNum = document.getString("phone");
+                        if (phoneNum != null) {
+                            phoneTxt.setText(phoneNum);
+                        } else {
+                            phoneTxt.setText("No phone number found");
+                        }
 
                         String priceList = document.getString("priceList");
                         priceListMap.put(document.getId(), priceList);
@@ -236,6 +246,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                     });
                                 }
                             });
+                        });
+
+                        phoneTxt.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+                                dialIntent.setData(Uri.parse("tel:" + phoneNum));
+                                startActivity(dialIntent);
+                            }
                         });
                     }
                 }
