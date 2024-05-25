@@ -16,6 +16,7 @@ public class CarService {
     private String id;
     private String imageUrl;
     private String serviceName;
+    private String phone;
     private double longitude;
     private double latitude;
     private String priceList;
@@ -32,6 +33,7 @@ public class CarService {
         this.serviceName = serviceName;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.phone = phone;
         this.priceList = priceList;
     }
 
@@ -75,6 +77,13 @@ public class CarService {
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
+
+    public String getPhone(){return phone;}
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getPriceList() {
         return priceList;
     }

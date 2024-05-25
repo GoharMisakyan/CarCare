@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class CarServiceRegistrationActivity extends AppCompatActivity {
 
-    private EditText editTextServiceName, editTextLatitude, editTextLongitude, editTextPriceList ;
+    private EditText editTextServiceName, editTextLatitude, editTextLongitude, editTextPriceList, editTextPhone ;
     private ImageView imageViewUploadPhoto;
     private Uri imageUri;
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -44,6 +44,7 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
         editTextServiceName = findViewById(R.id.editTextServiceName);
         editTextLatitude = findViewById(R.id.editTextLatitude);
         editTextLongitude = findViewById(R.id.editTextLongitude);
+        editTextPhone = findViewById(R.id.editTextPhone);
         editTextPriceList = findViewById(R.id.editTextPriceList);
         imageViewUploadPhoto = findViewById(R.id.imageViewUploadPhoto);
         Button buttonUploadPhoto = findViewById(R.id.buttonUploadPhoto);
@@ -96,8 +97,9 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
         String latitude = editTextLatitude.getText().toString();
         String longitude = editTextLongitude.getText().toString();
         String priceList = editTextPriceList.getText().toString();
+        String phone = editTextPhone.getText().toString();
 
-        if (serviceName.trim().isEmpty() || latitude.trim().isEmpty() || longitude.trim().isEmpty() || priceList.trim().isEmpty() || imageUri == null) {
+        if (serviceName.trim().isEmpty() || latitude.trim().isEmpty() || longitude.trim().isEmpty() || phone.trim().isEmpty() || priceList.trim().isEmpty() || imageUri == null) {
             Toast.makeText(this, "Please fill in all fields and upload an image", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -105,13 +107,13 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
         //storeRegistrationData(serviceName, latitude, longitude, priceList);
         FirebaseUser user = fAuth.getCurrentUser();
         if (user != null) {
-            storeRegistrationData(user, serviceName, latitude, longitude, priceList);
+            storeRegistrationData(user, serviceName, latitude, longitude, phone, priceList);
         } else {
             Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void storeRegistrationData(FirebaseUser user, String serviceName, String latitude, String longitude, String priceList) {
+    private void storeRegistrationData(FirebaseUser user, String serviceName, String latitude, String longitude, String phone, String priceList) {
 
        // FirebaseUser user = fAuth.getCurrentUser();
 
@@ -137,7 +139,10 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
             return;
         }
 
+        registrationData.put("phone", phone);
+
         registrationData.put("priceList", priceList);
+
 
 
 
@@ -164,6 +169,7 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
                                 editTextServiceName.setText("");
                                 editTextLatitude.setText("");
                                 editTextLongitude.setText("");
+                                editTextPhone.setText("");
                                 editTextPriceList.setText("");
                                 imageViewUploadPhoto.setImageResource(R.drawable.baseline_browse_gallery_24);
                                 imageUri = null;
