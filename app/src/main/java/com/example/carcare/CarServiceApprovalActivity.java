@@ -102,6 +102,7 @@ public class CarServiceApprovalActivity extends AppCompatActivity {
             private TextView textLongitude;
             private TextView textPriceList;
             private TextView textPhone;
+            private TextView textWorkingHours;
             private Button btnApprove;
             private Button btnReject;
 
@@ -114,6 +115,7 @@ public class CarServiceApprovalActivity extends AppCompatActivity {
                 textLatitude = itemView.findViewById(R.id.text_latitude);
                 textLongitude = itemView.findViewById(R.id.text_longitude);
                 textPhone = itemView.findViewById(R.id.text_phone);
+                textWorkingHours = itemView.findViewById(R.id.text_workingHours);
                 textPriceList = itemView.findViewById(R.id.text_price_list);
                 btnApprove = itemView.findViewById(R.id.btn_approve);
                 btnReject = itemView.findViewById(R.id.btn_reject);
@@ -132,6 +134,7 @@ public class CarServiceApprovalActivity extends AppCompatActivity {
                 textLatitude.setText(String.valueOf(carService.getLatitude()));
                 textLongitude.setText(String.valueOf(carService.getLongitude()));
                 textPhone.setText(carService.getPhone());
+                textWorkingHours.setText(carService.getWorkHours());
                 textPriceList.setText(carService.getPriceList());
 
 

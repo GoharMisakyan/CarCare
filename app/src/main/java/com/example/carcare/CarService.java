@@ -17,6 +17,7 @@ public class CarService {
     private String imageUrl;
     private String serviceName;
     private String phone;
+    private String workHours;
     private double longitude;
     private double latitude;
     private String priceList;
@@ -27,13 +28,14 @@ public class CarService {
         // Default constructor
     }
 
-    public CarService(String id, String imageUrl, String serviceName, double latitude, double longitude, String priceList) {
+    public CarService(String id, String imageUrl, String serviceName, double latitude, double longitude, String phone, String workHours, String priceList) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.serviceName = serviceName;
         this.latitude = latitude;
         this.longitude = longitude;
         this.phone = phone;
+        this.workHours = workHours;
         this.priceList = priceList;
     }
 
@@ -83,6 +85,8 @@ public class CarService {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+    public String getWorkHours(){return workHours;}
+    public void setWorkHours(String workHours){this.workHours = workHours;}
 
     public String getPriceList() {
         return priceList;

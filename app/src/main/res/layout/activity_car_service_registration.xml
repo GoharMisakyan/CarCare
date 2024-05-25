@@ -88,6 +88,20 @@
                 android:padding="12dp"
                 android:textColor="@color/black" />
 
+
+            <EditText
+                android:id="@+id/editTextWorkHours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Working Hours"
+                android:drawableLeft="@drawable/baseline_access_time_24"
+                android:drawablePadding="8dp"
+                android:background="@drawable/edittext_bkg"
+                android:padding="12dp"
+                android:textColor="@color/black" />
+
+
             <EditText
                 android:id="@+id/editTextPriceList"
                 android:layout_width="match_parent"

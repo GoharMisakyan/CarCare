@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class CarServiceRegistrationActivity extends AppCompatActivity {
 
-    private EditText editTextServiceName, editTextLatitude, editTextLongitude, editTextPriceList, editTextPhone ;
+    private EditText editTextServiceName, editTextLatitude, editTextLongitude, editTextPriceList, editTextPhone, editTextWorkHours ;
     private ImageView imageViewUploadPhoto;
     private Uri imageUri;
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -45,6 +45,7 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
         editTextLatitude = findViewById(R.id.editTextLatitude);
         editTextLongitude = findViewById(R.id.editTextLongitude);
         editTextPhone = findViewById(R.id.editTextPhone);
+        editTextWorkHours = findViewById(R.id.editTextWorkHours);
         editTextPriceList = findViewById(R.id.editTextPriceList);
         imageViewUploadPhoto = findViewById(R.id.imageViewUploadPhoto);
         Button buttonUploadPhoto = findViewById(R.id.buttonUploadPhoto);
@@ -98,8 +99,9 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
         String longitude = editTextLongitude.getText().toString();
         String priceList = editTextPriceList.getText().toString();
         String phone = editTextPhone.getText().toString();
+        String workingHours = editTextWorkHours.getText().toString();
 
-        if (serviceName.trim().isEmpty() || latitude.trim().isEmpty() || longitude.trim().isEmpty() || phone.trim().isEmpty() || priceList.trim().isEmpty() || imageUri == null) {
+        if (serviceName.trim().isEmpty() || latitude.trim().isEmpty() || longitude.trim().isEmpty() || phone.trim().isEmpty() || workingHours.trim().isEmpty() || priceList.trim().isEmpty() || imageUri == null) {
             Toast.makeText(this, "Please fill in all fields and upload an image", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -107,13 +109,13 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
         //storeRegistrationData(serviceName, latitude, longitude, priceList);
         FirebaseUser user = fAuth.getCurrentUser();
         if (user != null) {
-            storeRegistrationData(user, serviceName, latitude, longitude, phone, priceList);
+            storeRegistrationData(user, serviceName, latitude, longitude, phone, workingHours, priceList);
         } else {
             Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void storeRegistrationData(FirebaseUser user, String serviceName, String latitude, String longitude, String phone, String priceList) {
+    private void storeRegistrationData(FirebaseUser user, String serviceName, String latitude, String longitude, String phone, String workingHours, String priceList) {
 
        // FirebaseUser user = fAuth.getCurrentUser();
 
@@ -140,6 +142,7 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
         }
 
         registrationData.put("phone", phone);
+        registrationData.put("workHours", workingHours);
 
         registrationData.put("priceList", priceList);
 
@@ -170,6 +173,7 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
                                 editTextLatitude.setText("");
                                 editTextLongitude.setText("");
                                 editTextPhone.setText("");
+                                editTextWorkHours.setText("");
                                 editTextPriceList.setText("");
                                 imageViewUploadPhoto.setImageResource(R.drawable.baseline_browse_gallery_24);
                                 imageUri = null;

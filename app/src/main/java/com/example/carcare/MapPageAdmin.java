@@ -188,6 +188,7 @@ public class MapPageAdmin extends AppCompatActivity implements OnMapReadyCallbac
         TextView serviceNameTxt = dialog.findViewById(R.id.service_name_txt);
         Log.d("Debug", "serviceNameTxt: " + serviceNameTxt);
         TextView phoneTxt = dialog.findViewById(R.id.phone_number);
+        TextView workingHoursTxt = dialog.findViewById(R.id.txtView_work_hours);
 
 
         String documentId = marker.getTitle();
@@ -206,6 +207,12 @@ public class MapPageAdmin extends AppCompatActivity implements OnMapReadyCallbac
                             phoneTxt.setText("No phone number found");
                         }
 
+                        String workingHours = document.getString("workHours");
+                        if (workingHours != null) {
+                            workingHoursTxt.setText(workingHours);
+                        } else {
+                            workingHoursTxt.setText("No working hours found");
+                        }
 
                         String priceList = document.getString("priceList");
                         priceListMap.put(document.getId(), priceList);
