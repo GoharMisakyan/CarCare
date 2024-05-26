@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +30,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class ProfilePicUpload extends AppCompatActivity {
 
@@ -111,46 +119,45 @@ public class ProfilePicUpload extends AppCompatActivity {
 
     }
 
+
     private void UploadPic() {
-        if(uriImage != null){
-            //Saving the image
-            StorageReference fileReference = fStorage.child(fAuth.getCurrentUser().
-                    getUid() + "." + getFileExtension(uriImage));
-            //Upload image to storage
-            fileReference.putFile(uriImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            Uri downloadUri = uri;
-                            FirebaseUser currentUser = fAuth.getCurrentUser();
+        if (uriImage != null) {
+            try {
+                // Read and rotate the image if necessary
+                Bitmap bitmap = handleImageRotation(uriImage);
 
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().
-                                    setPhotoUri(downloadUri).build();
-                            currentUser.updateProfile(profileUpdates);
-                        }
-                    });
+                // Convert bitmap to byte array
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
 
-                    Toast.makeText(ProfilePicUpload.this,"Upload Successful",Toast.LENGTH_SHORT).show();
+                // Create a reference to the file to upload
+                StorageReference fileReference = fStorage.child(fAuth.getCurrentUser().getUid() + "." + getFileExtension(uriImage));
+
+                // Upload the byte array
+                fileReference.putBytes(data).addOnSuccessListener(taskSnapshot -> fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                    Uri downloadUri = uri;
+                    FirebaseUser currentUser = fAuth.getCurrentUser();
+
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setPhotoUri(downloadUri).build();
+                    currentUser.updateProfile(profileUpdates);
+
+                    Toast.makeText(ProfilePicUpload.this, "Upload Successful", Toast.LENGTH_SHORT).show();
                     FirebaseUser user = fAuth.getCurrentUser();
-                    if (user.getUid().equals("1ekcwcOSV8WttQgaFwCyLpH2Iuj2")){
-                        Intent intent = new Intent(ProfilePicUpload.this, ProfilePageAdmin.class);
-                    }else{
-                        Intent intent = new Intent(ProfilePicUpload.this, ProfileActivity.class);
-                        startActivity(intent);
+                    if (user.getUid().equals("1ekcwcOSV8WttQgaFwCyLpH2Iuj2")) {
+                        startActivity(new Intent(ProfilePicUpload.this, ProfilePageAdmin.class));
+                    } else {
+                        startActivity(new Intent(ProfilePicUpload.this, ProfileActivity.class));
                     }
                     finish();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(ProfilePicUpload.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                })).addOnFailureListener(e -> Toast.makeText(ProfilePicUpload.this, e.getMessage(), Toast.LENGTH_SHORT).show());
 
-                }
-            });
-        }else {
-            Toast.makeText(ProfilePicUpload.this,"No File Selected!",Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(ProfilePicUpload.this, "Failed to process the image", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(ProfilePicUpload.this, "No File Selected!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -176,5 +183,35 @@ public class ProfilePicUpload extends AppCompatActivity {
             imageViewUploadPic.setImageURI(uriImage);
         }
 
+    }
+
+
+    private Bitmap handleImageRotation(Uri uri) throws IOException {
+        InputStream inputStream = getContentResolver().openInputStream(uri);
+        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+        inputStream.close();
+
+        InputStream inputStreamForExif = getContentResolver().openInputStream(uri);
+        ExifInterface exif = new ExifInterface(inputStreamForExif);
+        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+        inputStreamForExif.close();
+
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                return rotateBitmap(bitmap, 90);
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return rotateBitmap(bitmap, 180);
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return rotateBitmap(bitmap, 270);
+            default:
+                return bitmap;
+        }
+    }
+
+
+    private Bitmap rotateBitmap(Bitmap bitmap, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 }
