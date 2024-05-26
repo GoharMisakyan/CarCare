@@ -60,17 +60,6 @@
             android:textColorLink="#FFFFFF"
             android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/requests_btn"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:backgroundTint="@color/royalBlue"
-            android:text="Requests"
-            android:layout_marginBottom="20dp"
-            android:textColorLink="#FFFFFF"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView" />
-
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -94,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.20" />
+        app:layout_constraintGuide_percent="0.30" />
 
 
     <androidx.constraintlayout.widget.Guideline

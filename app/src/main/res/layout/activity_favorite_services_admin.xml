@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:background="@drawable/background"
-    tools:context=".FavoriteServicesActivity">
+    tools:context=".FavoriteServicesAdmin">
 
     <LinearLayout
         android:id="@+id/linearLayout"
