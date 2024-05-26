@@ -49,7 +49,6 @@ public class FavoriteServicesAdapter extends RecyclerView.Adapter<FavoriteServic
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String service = favoriteServices.get(position);
         holder.textServiceName.setText(service);
-        holder.ratingBar.setRating(5);
     }
 
     @Override
@@ -82,12 +81,11 @@ public class FavoriteServicesAdapter extends RecyclerView.Adapter<FavoriteServic
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textServiceName;
-        RatingBar ratingBar;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textServiceName = itemView.findViewById(R.id.service_name);
-            ratingBar = itemView.findViewById(R.id.rate_bar);
 
             // Swipe gesture detection
             itemView.setOnTouchListener(new View.OnTouchListener() {

@@ -10,21 +10,20 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bottom_background"
         android:elevation="2dp"
         android:foregroundTint="#002366"
-        app:itemIconSize="30dp"
+        app:itemIconSize="40dp"
         app:itemIconTint="@drawable/item_selector"
         app:itemRippleColor="@android:color/transparent"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintEnd_toStartOf="@+id/guideline1"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toTopOf="@+id/guideline4"
-        app:layout_constraintVertical_bias="0.222"
         app:menu="@menu/bottom_menu" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -42,33 +41,33 @@
         <Button
             android:id="@+id/favorites"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginBottom="20dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="50dp"
             android:backgroundTint="@color/royalBlue"
             android:text="Favorite Services"
             android:textColorLink="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="30sp" />
 
 
         <Button
             android:id="@+id/aboutbtn"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="50dp"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:backgroundTint="@color/royalBlue"
             android:text="About"
             android:textColorLink="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="30sp" />
 
         <Button
             android:id="@+id/requests_btn"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:backgroundTint="@color/royalBlue"
             android:text="Requests"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="50dp"
             android:textColorLink="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="30sp"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView" />
 
 
@@ -79,14 +78,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.10" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
+        app:layout_constraintGuide_percent="0.90" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -110,7 +109,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.87" />
+        app:layout_constraintGuide_percent="0.90" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -119,6 +118,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.97" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+
 
 
 

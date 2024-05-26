@@ -28,16 +28,6 @@ public class NavigationBarActivity extends AppCompatActivity {
         });
 
 
-
-        Button history = findViewById(R.id.ServiceHistory);
-        history.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NavigationBarActivity.this, ServiceHistoryActivity.class);
-                startActivity(intent);
-            }
-        });
-
         Button favorites = findViewById(R.id.favorites);
         favorites.setOnClickListener(new View.OnClickListener() {
             @Override

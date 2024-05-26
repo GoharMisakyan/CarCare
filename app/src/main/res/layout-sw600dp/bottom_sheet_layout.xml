@@ -29,9 +29,7 @@
             android:text="Service Name"
             android:textAlignment="viewStart"
             android:textColor="@color/royalBlue"
-            android:textSize="20dp" />
-
-
+            android:textSize="40sp" />
 
     </LinearLayout>
 
@@ -45,8 +43,8 @@
 
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
             android:src="@drawable/baseline_phone_24"/>
 
         <TextView
@@ -57,7 +55,7 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_marginLeft="30dp"
-            android:textSize="18sp"/>
+            android:textSize="32sp"/>
 
     </LinearLayout>
 
@@ -71,8 +69,8 @@
 
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
             android:src="@drawable/baseline_access_time_24"/>
 
         <TextView
@@ -83,7 +81,7 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_marginLeft="30dp"
-            android:textSize="18sp"/>
+            android:textSize="32sp"/>
 
     </LinearLayout>
 
@@ -99,8 +97,8 @@
 
         <ImageView
             android:id="@+id/add_to_fav"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
             android:onClick="addToFavorites"
             android:src="@drawable/baseline_favorite_border_24"/>
 
@@ -112,7 +110,7 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_marginLeft="30dp"
-            android:textSize="16sp"/>
+            android:textSize="32sp"/>
 
     </LinearLayout>
 
@@ -127,8 +125,8 @@
 
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
             android:src="@drawable/outline_eye_24"/>
 
         <TextView
@@ -139,7 +137,7 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_marginLeft="30dp"
-            android:textSize="16sp"/>
+            android:textSize="32sp"/>
 
     </LinearLayout>
 
