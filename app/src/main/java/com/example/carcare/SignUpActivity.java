@@ -82,31 +82,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    /*private void checkSpecialCode(String code) {
-        fStore.collection("SpecialCodes")
-                .document("G9B8b5c%b0j")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                String storedCode = document.getString("code");
-                                if (storedCode != null && storedCode.equals(code)) {
-                                    registerUser(true);
-                                } else {
-                                    Toast.makeText(SignUpActivity.this, "Invalid special code", Toast.LENGTH_SHORT).show();
-                                }
-                            } else {
-                                Toast.makeText(SignUpActivity.this, "Special code document not found", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(SignUpActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }*/
 
     private void registerUser() {
         fAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
@@ -128,8 +103,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     public void onSuccess(Void aVoid) {
                                         user.sendEmailVerification();
                                         Toast.makeText(SignUpActivity.this, "All the data has been saved", Toast.LENGTH_SHORT).show();
-                                        //startActivity(new Intent(getApplicationContext(), SignInActivity.class));
-                                        //finish();
+
                                         if (ownerSwitch.isChecked()) {
                                             startActivity(new Intent(SignUpActivity.this, CarServiceRegistrationActivity.class));
                                             Toast.makeText(SignUpActivity.this, "Please Fill In details about yourCar Service, Submit them and wait for the approval result.", Toast.LENGTH_LONG).show();
@@ -162,7 +136,7 @@ public class SignUpActivity extends AppCompatActivity {
     public boolean checkField(EditText textField) {
         if (textField.getText().toString().isEmpty()) {
             textField.setError("This field can not be EMPTY");
-            //textField.requestFocus();
+
 
             valid = false;
         } else if (!confirmPassword.getText().toString().equals(password.getText().toString())){
@@ -179,43 +153,4 @@ public class SignUpActivity extends AppCompatActivity {
         return valid;
     }
 
-    /*public boolean isApproved(String userId) {
-        fStore.collection("approvedCarServices")
-                .document(userId)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                       approved = true;
-                    } else {
-                       approved = false;
-                        Toast.makeText(SignUpActivity.this, "Your registration request has been rejected, if you find it wrong, please try again", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("SignUpActivity", "Error checking user approval: ", e);
-                    Toast.makeText(SignUpActivity.this, "An error occurred. Please try again later.", Toast.LENGTH_SHORT).show();
-                });
-        return approved;
-    }*/
-    /*public void isApproved(String userId, ApprovalCallback callback) {
-        fStore.collection("approvedCarServices")
-                .document(userId)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        callback.onApproved(true);
-                    } else {
-                        callback.onApproved(false);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("SignUpActivity", "Error checking user approval: ", e);
-                    callback.onError(e.getMessage());
-                });
-    }
-
-    interface ApprovalCallback {
-        void onApproved(boolean approved);
-        void onError(String errorMessage);
-    }*/
 }

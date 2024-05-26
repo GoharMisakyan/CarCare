@@ -30,7 +30,7 @@ public class PricelistActivity extends AppCompatActivity {
             adapter = new PriceListAdapter(priceItems);
             recyclerView.setAdapter(adapter);
         } else {
-            // Handle the case where priceList is null, maybe display a message or take some other action
+
             Toast.makeText(this, "Price list is empty", Toast.LENGTH_SHORT).show();
         }
 

@@ -65,15 +65,6 @@ public class CarServiceApprovalActivity extends AppCompatActivity {
     }
 
     private  class CarServiceAdapter extends RecyclerView.Adapter<CarServiceAdapter.CarServiceViewHolder> {
-      /*  private List<CarService> carServiceList;
-        private FirebaseFirestore fStore;
-        private CarServiceApprovalActivity activity;
-
-
-        public CarServiceAdapter(List<CarService> carServiceList, CarServiceApprovalActivity activity) {
-            this.carServiceList = carServiceList;
-            this.fStore = fStore;
-        }*/
 
         @NonNull
         @Override

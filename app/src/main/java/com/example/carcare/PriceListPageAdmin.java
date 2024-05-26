@@ -32,7 +32,7 @@ public class PriceListPageAdmin extends AppCompatActivity {
             adapter = new PriceListAdapter(priceItems);
             recyclerView.setAdapter(adapter);
         } else {
-            // Handle the case where priceList is null, maybe display a message or take some other action
+
             Toast.makeText(this, "Price list is empty", Toast.LENGTH_SHORT).show();
         }
 
@@ -52,7 +52,7 @@ public class PriceListPageAdmin extends AppCompatActivity {
                 }
             });
         } else {
-            // Handle the case where searchView is null
+
             Toast.makeText(this, "SearchView not found", Toast.LENGTH_SHORT).show();
         }
     }

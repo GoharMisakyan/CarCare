@@ -74,7 +74,6 @@ public class FavoriteServicesAdmin extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Refreshing favorite services when the activity is resumed
         fetchFavoriteServices();
     }
 

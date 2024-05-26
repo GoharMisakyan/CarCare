@@ -117,9 +117,6 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
 
     private void storeRegistrationData(FirebaseUser user, String serviceName, String latitude, String longitude, String phone, String workingHours, String priceList) {
 
-       // FirebaseUser user = fAuth.getCurrentUser();
-
-
         Map<String, Object> registrationData = new HashMap<>();
         registrationData.put("id", user.getUid());
         registrationData.put("serviceName", serviceName);
@@ -145,9 +142,6 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
         registrationData.put("workHours", workingHours);
 
         registrationData.put("priceList", priceList);
-
-
-
 
         StorageReference imageRef = storageRef.child("images/" + user.getUid() + "_service_image");
         UploadTask uploadTask = imageRef.putFile(imageUri);
@@ -199,7 +193,7 @@ public class CarServiceRegistrationActivity extends AppCompatActivity {
                 .document(ownerId)
                 .collection("pending")
                 .document(userId)
-                .set(new HashMap<>()) // Empty document, or you can add additional data
+                .set(new HashMap<>())
                 .addOnSuccessListener(aVoid -> {
                     // Notification sent successfully
                 })

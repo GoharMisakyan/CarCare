@@ -26,7 +26,7 @@ import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    Button logoutBtn, editBtn;
+    Button logoutBtn;
 
     TextView profileName, profileEmail, profilePhoneNumber, titleName;
 
@@ -45,7 +45,6 @@ public class ProfileActivity extends AppCompatActivity {
         profileEmail = findViewById(R.id.profileEmail);
         profilePhoneNumber = findViewById(R.id.profilePhoneNumber);
         titleName = findViewById(R.id.titleName);
-        editBtn = findViewById(R.id.editButton);
         profilePicImg = findViewById(R.id.profileImg);
         fStore = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();

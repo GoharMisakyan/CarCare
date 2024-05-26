@@ -99,8 +99,6 @@ FirebaseFirestore fStore;
                        @Override
                        public void onSuccess(AuthResult authResult) {
                            Log.d("SignInActivity", "Sign-in successful.");
-                           //Toast.makeText(SignInActivity.this, "Signed In Successfully!", Toast.LENGTH_SHORT).show();
-                          // checkUserAccessLevel(authResult.getUser().getUid());
 
 
                            //Checking if the user has verified email

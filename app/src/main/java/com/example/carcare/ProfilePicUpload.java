@@ -52,16 +52,6 @@ public class ProfilePicUpload extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_pic_upload);
 
-
-       /* if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Upload Profile Picture");
-        } else {
-            Log.e("ProfilePicUpload", "ActionBar is null");
-        }
-
-
-        getSupportActionBar().setTitle("Upload Profile Picture");*/
-
         fAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = fAuth.getCurrentUser();
 
@@ -123,18 +113,18 @@ public class ProfilePicUpload extends AppCompatActivity {
     private void UploadPic() {
         if (uriImage != null) {
             try {
-                // Read and rotate the image if necessary
+                // Reading and rotating the image if necessary
                 Bitmap bitmap = handleImageRotation(uriImage);
 
-                // Convert bitmap to byte array
+                // Converting bitmap to byte array
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] data = baos.toByteArray();
 
-                // Create a reference to the file to upload
+                // Creating a reference to the file to upload
                 StorageReference fileReference = fStorage.child(fAuth.getCurrentUser().getUid() + "." + getFileExtension(uriImage));
 
-                // Upload the byte array
+                // Uploading the byte array
                 fileReference.putBytes(data).addOnSuccessListener(taskSnapshot -> fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
                     Uri downloadUri = uri;
                     FirebaseUser currentUser = fAuth.getCurrentUser();
